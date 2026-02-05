@@ -19,7 +19,6 @@ namespace TycoonGame
         public MainWindow()
         {
             InitializeComponent();
-            //Cozma
         }
     }
 }
