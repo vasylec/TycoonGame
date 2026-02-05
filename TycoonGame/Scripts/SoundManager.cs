@@ -1,6 +1,7 @@
-﻿using NAudio.Wave;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using NAudio.Wave;
 
 namespace TycoonGame.Scripts
 {
@@ -10,65 +11,86 @@ namespace TycoonGame.Scripts
         public float MusicVolume { get; set; } = 1f;
         public float SFXVolume { get; set; } = 1f;
 
-        private WaveOutEvent musicOutput;
-        private AudioFileReader musicFile;
+        private WaveOutEvent? musicOutput;
+        private AudioFileReader? musicFile;
 
-        private List<(WaveOutEvent, AudioFileReader)> sfxPlayers = new List<(WaveOutEvent, AudioFileReader)>();
+        private List<(WaveOutEvent, AudioFileReader)> sfxPlayers = new();
 
-        // Muzica de fundal
-        public void PlayMusic(string path, bool loop = true)
+        public void PlayMusic(string relativePath)
         {
-            musicFile = new AudioFileReader(path);
+            string fullPath = Path.Combine(
+                AppDomain.CurrentDomain.BaseDirectory,
+                relativePath
+            );
+
+            if (!File.Exists(fullPath))
+                throw new FileNotFoundException("Music file not found", fullPath);
+
+            if (musicOutput != null) return; // deja rulează
+
+            musicFile = new AudioFileReader(fullPath);
             musicOutput = new WaveOutEvent();
+
             UpdateMusicVolume();
             musicOutput.Init(musicFile);
             musicOutput.Play();
 
-            if (loop)
+            // loop
+            musicOutput.PlaybackStopped += (s, e) =>
             {
-                musicOutput.PlaybackStopped += (s, e) =>
+                if (musicFile != null)
                 {
                     musicFile.Position = 0;
                     musicOutput.Play();
-                };
-            }
+                }
+            };
         }
 
-        // Efecte SFX
-        public void PlaySFX(string path)
+        public void PlaySFX(string relativePath)
         {
-            var file = new AudioFileReader(path);
+            string fullPath = Path.Combine(
+                AppDomain.CurrentDomain.BaseDirectory,
+                relativePath
+            );
+
+            if (!File.Exists(fullPath)) return;
+
+            var file = new AudioFileReader(fullPath);
             var output = new WaveOutEvent();
             file.Volume = SFXVolume * MasterVolume;
+
             output.Init(file);
             output.Play();
+
             output.PlaybackStopped += (s, e) =>
             {
                 output.Dispose();
                 file.Dispose();
             };
+
             sfxPlayers.Add((output, file));
         }
 
-        // Actualizare volum muzică
         public void UpdateMusicVolume()
         {
             if (musicFile != null)
                 musicFile.Volume = MusicVolume * MasterVolume;
         }
 
-        // Actualizare volum SFX
         public void UpdateSFXVolume()
         {
-            foreach (var (output, file) in sfxPlayers)
-                if (file != null)
-                    file.Volume = SFXVolume * MasterVolume;
+            foreach (var pair in sfxPlayers)
+            {
+                pair.Item2.Volume = SFXVolume * MasterVolume;
+            }
         }
 
         public void Dispose()
         {
+            musicOutput?.Stop();
             musicOutput?.Dispose();
             musicFile?.Dispose();
+            sfxPlayers.Clear();
         }
     }
 }
