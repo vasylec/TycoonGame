@@ -6,12 +6,39 @@
         xmlns:local="clr-namespace:TycoonGame.Scenes"
         mc:Ignorable="d"
         Title="MainMenu" Height="450" Width="800">
+
     <Grid>
-        <Button Content="Load Game&#xA;" HorizontalAlignment="Center" Margin="0,217,0,0" VerticalAlignment="Top" Click="Button_Click" Width="104" Height="24"/>
-        <Label Content="Tycoon Game&#xD;&#xA;" HorizontalAlignment="Center" Margin="0,41,0,0" VerticalAlignment="Top" Height="37" Width="104"/>
-        <Button x:Name="exitButton" Content="Exit" HorizontalAlignment="Left" Margin="348,294,0,0" VerticalAlignment="Top" Click="exitButtonClick" Width="101" RenderTransformOrigin="0.812,0.227"/>
-        <Button Content="Settings" HorizontalAlignment="Left" Margin="348,258,0,0" VerticalAlignment="Top" Click="Button_Click_1" Width="101" RenderTransformOrigin="0.812,0.227"/>
-        <Button Content="Load" HorizontalAlignment="Left" Margin="348,217,0,0" VerticalAlignment="Top" Width="101" Click="Button_Click_2"/>
+        <StackPanel HorizontalAlignment="Center" Margin="24,10,0,0"  VerticalAlignment="Center">
+            <Label Content="Tycoon Game" Margin="0,20,0,20" FontSize="48" FontWeight="Bold"/>
+            <Button Content="New Game" Width="174" Click="btnShowPopup_Click" Cursor="Hand" Height="66">
+                
+            </Button>
+            <Button Margin="0,20,0,0" Width="180" VerticalAlignment="Top" Click="Button_Click_2" Cursor="Hand">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <ContentPresenter/>
+                    </ControlTemplate>
+                </Button.Template>
+                <Image Height="61" Width="174" Source="/Assets/ButtonLoad.png" RenderOptions.BitmapScalingMode="NearestNeighbor" RenderOptions.EdgeMode="Aliased"/>
+            </Button>
+            <Button Content="Settings" Margin="0,20,0,0" Width="180" VerticalAlignment="Top" Click="Button_Click_1" RenderTransformOrigin="0.812,0.227" Cursor="Hand"/>
+            <Button x:Name="exitButton" Content="Exit" Margin="0,20,0,20" Width="180" VerticalAlignment="Top" Click="exitButtonClick" RenderTransformOrigin="0.812,0.227" Cursor="Hand"/>
+        </StackPanel>
+
+        <!--<Label Content="Tycoon Game&#xD;&#xA;" HorizontalAlignment="Center" Margin="0,41,0,0" VerticalAlignment="Top" Height="37" Width="104"/>-->
+
+
+        <Grid Name="popupContainer" Background="#80000000" Visibility="Collapsed">
+            <Border Width="250" Height="150" Background="LightGray" BorderBrush="Black" BorderThickness="2"
+                    CornerRadius="10" Padding="10" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Height="130" Width="230">
+                    <Button Content="Închide" Width="50" HorizontalAlignment="Left" Click="ClosePopup_Click"/>
+                    <TextBlock x:Name="newGameTextBlock" Text="Enter your save name !" HorizontalAlignment="Center" Margin="0,15,0,10"/>
+                    <TextBox x:Name="newGameTextBox" TextWrapping="NoWrap" Width="150" />
+                    <Button Content="New Game" Width="80" HorizontalAlignment="Center" Margin="0,10,0,0" Click="btn_newGame"/>
+                </StackPanel>
+            </Border>
+        </Grid>
 
     </Grid>
 </Window>
