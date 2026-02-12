@@ -14,7 +14,7 @@
                 <Button x:Name="btnLoad" Content="Load" Canvas.Left="118" Canvas.Top="37" HorizontalAlignment="Left" VerticalAlignment="Center" Height="27" Width="108" Cursor="Hand"/>
                 <Button x:Name="btnSave" Content="Save" Canvas.Left="262" Canvas.Top="37" Height="27" Width="108" HorizontalAlignment="Left" VerticalAlignment="Center" Cursor="Hand"/>
                 <Button x:Name="btnDelete" Content="Delete" Canvas.Left="406" Canvas.Top="37" Height="27" Width="108" HorizontalAlignment="Left" VerticalAlignment="Center" Cursor="Hand"/>
-                <Label Content="Slot 1" Canvas.Left="118" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="14"/>
+                <Label x:Name="slot1" Content="Slot 1" Canvas.Left="118" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="14"/>
                 <Label Content="Date" Canvas.Left="393" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Top"/>
                 <Image Height="68" Canvas.Left="10" Width="64" Source="/Assets/SaveIcon.png" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
