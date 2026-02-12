@@ -78,5 +78,18 @@ namespace TycoonGame.Scenes
             _currentContent = page;
 
         }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            Settings settings = new Settings(this);
+            FadeTransition(this.Content as UIElement, settings);
+            this.Content = settings;
+            _currentContent = settings;
+        }
+
+        private void exitButtonClick(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
     }
 }
