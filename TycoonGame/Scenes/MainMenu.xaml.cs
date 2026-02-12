@@ -1,19 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace TycoonGame.Scenes
 {
@@ -26,9 +16,12 @@ namespace TycoonGame.Scenes
         private UIElement _currentContent;
         private static MainMenu _instance;
 
+        // Font pixel art Daydream
+        private FontFamily _pixelFont;
+
         public MainMenu()
         {
-            InitializeComponent();   
+            InitializeComponent();
 
             this.WindowState = WindowState.Maximized;
             this.WindowStyle = WindowStyle.None;
@@ -36,6 +29,36 @@ namespace TycoonGame.Scenes
 
             _instance = this;
             _originalContent = this.Content as UIElement;
+
+            // Încarcă font pixel art Daydream
+            _pixelFont = new FontFamily(
+                new Uri("pack://application:,,,/"),
+                        "./Assets/Fonts/#Daydream" 
+            );
+
+            this.Loaded += MainMenu_Loaded;
+        }
+        private void MainMenu_Loaded(object sender, RoutedEventArgs e)
+        {
+            ApplyPixelFont(this);
+        }
+        // Recursiv aplică font pixel art la toate Button, Label și TextBlock
+        private void ApplyPixelFont(DependencyObject parent)
+        {
+            int count = VisualTreeHelper.GetChildrenCount(parent);
+            for (int i = 0; i < count; i++)
+            {
+                var child = VisualTreeHelper.GetChild(parent, i);
+
+                if (child is Button btn)
+                    btn.FontFamily = _pixelFont;
+                else if (child is Label lbl)
+                    lbl.FontFamily = _pixelFont;
+                else if (child is TextBlock tb)
+                    tb.FontFamily = _pixelFont;
+
+                ApplyPixelFont(child); // recursiv
+            }
         }
 
         private async void FadeTransition(UIElement oldContent, UIElement newContent)
@@ -44,30 +67,27 @@ namespace TycoonGame.Scenes
             if (oldContent != null)
             {
                 DoubleAnimation fadeOut = new DoubleAnimation(1, 0, TimeSpan.FromSeconds(0.3));
-                fadeOut.Completed += (s, e) => { /* opțional */ };
                 oldContent.BeginAnimation(UIElement.OpacityProperty, fadeOut);
             }
 
-            // ✅ FIX: Setează pagina nouă INVIZIBILĂ de la început
+            // Setează pagina nouă INVIZIBILĂ și fade IN
             if (newContent != null)
             {
-                newContent.Opacity = 0;  // ← CHEIA - fără flicker!
-                this.Content = newContent;  // Schimbă conținutul ACUM
+                newContent.Opacity = 0;
+                this.Content = newContent;
+                _currentContent = newContent;
 
-                // Apoi fade IN
-                await Task.Delay(50);  // Delay minim
+                await Task.Delay(50);
                 DoubleAnimation fadeIn = new DoubleAnimation(0, 1, TimeSpan.FromSeconds(0.3));
                 newContent.BeginAnimation(UIElement.OpacityProperty, fadeIn);
             }
         }
-
 
         public void GoBack()
         {
             FadeTransition(_currentContent, _originalContent);
             _currentContent = _originalContent;
             this.Content = _originalContent;
-
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -76,7 +96,6 @@ namespace TycoonGame.Scenes
             FadeTransition(this.Content as UIElement, page);
             this.Content = page;
             _currentContent = page;
-
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
@@ -98,7 +117,6 @@ namespace TycoonGame.Scenes
             FadeTransition(this.Content as UIElement, loadsave);
             this.Content = loadsave;
             _currentContent = loadsave;
-
         }
     }
 }
