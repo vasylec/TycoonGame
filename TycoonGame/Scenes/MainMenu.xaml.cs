@@ -87,7 +87,7 @@ namespace TycoonGame.Scenes
             _currentContent = settings;
         }
 
-        private void Button_Click_1(object sender, object e)
+        private void exitButtonClick(object sender, RoutedEventArgs e)
         {
             this.Close();
         }
