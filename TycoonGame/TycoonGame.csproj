@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Assets\ButtonLoad.png" />
     <None Remove="Assets\Fonts\Daydream DEMO.otf" />
     <None Remove="Assets\SaveIcon.png" />
     <None Remove="Sounds\music.mp3" />
@@ -23,6 +24,9 @@
     <Resource Include="Assets\Fonts\Daydream DEMO.otf">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
+    <Content Include="Assets\ButtonLoad.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Assets\SaveIcon.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

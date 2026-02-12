@@ -57,6 +57,16 @@ namespace TycoonGame.Scenes
                 else if (child is TextBlock tb)
                     tb.FontFamily = _pixelFont;
 
+                if (child is Image img)
+                {
+                    RenderOptions.SetBitmapScalingMode(img, BitmapScalingMode.NearestNeighbor);
+                    RenderOptions.SetEdgeMode(img, EdgeMode.Aliased);
+                    img.SnapsToDevicePixels = true;
+                    img.UseLayoutRounding = true;
+                }
+
+
+
                 ApplyPixelFont(child); // recursiv
             }
         }

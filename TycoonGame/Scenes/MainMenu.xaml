@@ -12,6 +12,6 @@
         <Label Content="Tycoon Game&#xD;&#xA;" HorizontalAlignment="Center" Margin="0,41,0,0" VerticalAlignment="Top" Height="37" Width="104"/>
         <Button x:Name="exitButton" Content="Exit" HorizontalAlignment="Left" Margin="348,294,0,0" VerticalAlignment="Top" Click="exitButtonClick" Width="101" RenderTransformOrigin="0.812,0.227"/>
         <Button Content="Settings" HorizontalAlignment="Left" Margin="348,258,0,0" VerticalAlignment="Top" Click="Button_Click_1" Width="101" RenderTransformOrigin="0.812,0.227"/>
-        <Button Content="Load" HorizontalAlignment="Left" Margin="348,217,0,0" VerticalAlignment="Top" Width="101" Click="Button_Click_2"/>
+        <Button Content="Load" HorizontalAlignment="Center" Margin="0,182,0,0" VerticalAlignment="Top" Width="105" Click="Button_Click_2"/>
     </Grid>
 </Window>
