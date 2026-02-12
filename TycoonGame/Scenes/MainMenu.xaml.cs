@@ -128,5 +128,34 @@ namespace TycoonGame.Scenes
             this.Content = loadsave;
             _currentContent = loadsave;
         }
+        private void btnShowPopup_Click(object sender, RoutedEventArgs e)
+        {
+            popupContainer.Visibility = Visibility.Visible; // arată popup-ul
+
+            newGameTextBlock.Text = "Enter your save name !"; 
+            newGameTextBox.Text = "";
+        }
+
+        private void ClosePopup_Click(object sender, RoutedEventArgs e)
+        {
+            popupContainer.Visibility = Visibility.Collapsed; // ascunde popup-ul
+        }
+
+        private void btn_newGame(object sender, RoutedEventArgs e)
+        {
+            App.saveName = newGameTextBox.Text;
+            
+            if (string.IsNullOrWhiteSpace(App.saveName))
+            {
+                MessageBox.Show("Please enter a valid game title.");
+                return;
+            }
+
+            newGameTextBlock.Text = $"Starting new game: {App.saveName}";
+
+
+
+
+        }
     }
 }

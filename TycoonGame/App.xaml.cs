@@ -6,6 +6,7 @@ namespace TycoonGame
     public partial class App : Application
     {
         public static SoundManager Sound { get; private set; } = null!;
+        public static String saveName;
 
         protected override void OnStartup(StartupEventArgs e)
         {

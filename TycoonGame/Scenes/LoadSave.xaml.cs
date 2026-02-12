@@ -27,6 +27,8 @@ namespace TycoonGame.Scenes
             InitializeComponent();
             _parentWindow = parent;
 
+            slot1.Content = App.saveName;
+
         }
 
         private void btnMainMenu_Click(object sender, RoutedEventArgs e)
