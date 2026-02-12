@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:TycoonGame.Scenes"
         mc:Ignorable="d"
         Title="MainMenu" Height="450" Width="800">
+
     <Grid>
         <StackPanel HorizontalAlignment="Center" Margin="24,10,0,0"  VerticalAlignment="Center">
             <Label Content="Tycoon Game" Margin="0,20,0,20" FontSize="48" FontWeight="Bold"/>
