@@ -1,0 +1,43 @@
+﻿<Page x:Class="TycoonGame.Scenes.LoadSave"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:TycoonGame.Scenes"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="LoadSave">
+
+    <Grid>
+        <Canvas HorizontalAlignment="Center" Height="360" VerticalAlignment="Center" Width="675" Background="DarkGreen">
+            <Canvas Height="74" Canvas.Left="76" Canvas.Top="52" Width="524" Background="Beige" HorizontalAlignment="Left" VerticalAlignment="Top">
+                <Button x:Name="btnLoad" Content="Load" Canvas.Left="118" Canvas.Top="37" HorizontalAlignment="Left" VerticalAlignment="Center" Height="27" Width="108" Cursor="Hand"/>
+                <Button x:Name="btnSave" Content="Save" Canvas.Left="262" Canvas.Top="37" Height="27" Width="108" HorizontalAlignment="Left" VerticalAlignment="Center" Cursor="Hand"/>
+                <Button x:Name="btnDelete" Content="Delete" Canvas.Left="406" Canvas.Top="37" Height="27" Width="108" HorizontalAlignment="Left" VerticalAlignment="Center" Cursor="Hand"/>
+                <Label Content="Slot 1" Canvas.Left="118" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="14"/>
+                <Label Content="Date" Canvas.Left="393" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <Image Height="68" Canvas.Left="10" Width="64" Source="/Assets/SaveIcon.png" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+            </Canvas>
+            <Canvas Height="74" Canvas.Left="76" Canvas.Top="143" Width="524" Background="Beige" HorizontalAlignment="Left" VerticalAlignment="Top">
+                <Button x:Name="btnLoad1" Content="Load" Canvas.Left="118" Canvas.Top="37" HorizontalAlignment="Left" VerticalAlignment="Center" Height="27" Width="108" Cursor="Hand"/>
+                <Button x:Name="btnSave1" Content="Save" Canvas.Left="262" Canvas.Top="37" Height="27" Width="108" HorizontalAlignment="Left" VerticalAlignment="Center" Cursor="Hand"/>
+                <Button x:Name="btnDelete1" Content="Delete" Canvas.Left="406" Canvas.Top="37" Height="27" Width="108" HorizontalAlignment="Left" VerticalAlignment="Center" Cursor="Hand"/>
+                <Label Content="Slot 2" Canvas.Left="118" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="14"/>
+                <Label Content="Date" Canvas.Left="393" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <Image Height="68" Canvas.Left="10" Width="64" Source="/Assets/SaveIcon.png" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+
+            </Canvas>
+            <Canvas Height="74" Canvas.Left="76" Canvas.Top="236" Width="524" Background="Beige" HorizontalAlignment="Left" VerticalAlignment="Top">
+                <Button x:Name="btnLoad2" Content="Load" Canvas.Left="118" Canvas.Top="37" HorizontalAlignment="Left" VerticalAlignment="Center" Height="27" Width="108" Cursor="Hand"/>
+                <Button x:Name="btnSave2" Content="Save" Canvas.Left="262" Canvas.Top="37" Height="27" Width="108" HorizontalAlignment="Left" VerticalAlignment="Center" Cursor="Hand"/>
+                <Button x:Name="btnDelete2" Content="Delete" Canvas.Left="406" Canvas.Top="37" Height="27" Width="108" HorizontalAlignment="Left" VerticalAlignment="Center" Cursor="Hand"/>
+                <Label Content="Slot 3" Canvas.Left="118" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="14"/>
+                <Label Content="Date" Canvas.Left="393" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <Image Height="68" Canvas.Left="10" Width="64" Source="/Assets/SaveIcon.png" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+
+            </Canvas>
+            <Button x:Name="btnMainMenu" Content="Main Menu" Canvas.Top="10" Height="37" Width="77" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.431,0.438" Canvas.Left="10" Click="btnMainMenu_Click"/>
+        </Canvas>
+    </Grid>
+</Page>

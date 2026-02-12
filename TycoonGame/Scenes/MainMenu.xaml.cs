@@ -91,5 +91,14 @@ namespace TycoonGame.Scenes
         {
             this.Close();
         }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            LoadSave loadsave = new LoadSave(this);
+            FadeTransition(this.Content as UIElement, loadsave);
+            this.Content = loadsave;
+            _currentContent = loadsave;
+
+        }
     }
 }
