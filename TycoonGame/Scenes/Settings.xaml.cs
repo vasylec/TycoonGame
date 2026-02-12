@@ -6,53 +6,42 @@ namespace TycoonGame.Scenes
 {
     public partial class Settings : Page
     {
-        private SoundManager soundManager = new SoundManager();
+        private SoundManager sound => App.Sound;
         private MainMenu _parentWindow;
 
-        public Settings()
+        public Settings(MainMenu parent)
         {
             InitializeComponent();
-            soundManager = new SoundManager();
-        }
-
-
-        public Settings(MainMenu parent) : this()
-        {
-            //InitializeComponent();
             _parentWindow = parent;
 
-            // Pornește muzica automat
-            soundManager.PlayMusic("Sounds/music.mp3");
-            soundManager.PlaySFX("Sounds/sfx.wav");
-
-            // Valori initiale slider
             trackMaster.Value = 100;
-            trackMusic.Value = 0;
-            trackSFX.Value = 0;
+            trackMusic.Value = 100;
+            trackSFX.Value = 100;
         }
 
         private void trackMaster_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            if (soundManager == null) return;
-            soundManager.MasterVolume = (float)(trackMaster.Value / 100.0f);
-            soundManager.UpdateMusicVolume();
-            soundManager.UpdateSFXVolume();
-        }
-
-        private void trackSFX_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            if (soundManager == null) return;
-            soundManager.SFXVolume = (float)(trackSFX.Value / 100.0f);
-            soundManager.UpdateSFXVolume();
+            sound.MasterVolume = (float)(trackMaster.Value / 100.0);
+            sound.UpdateMusicVolume();
+            sound.UpdateSFXVolume();
         }
 
         private void trackMusic_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            if (soundManager == null) return;
-            soundManager.MusicVolume = (float)(trackMusic.Value / 100.0f);
-            soundManager.UpdateMusicVolume();
+            sound.MusicVolume = (float)(trackMusic.Value / 100.0);
+            sound.UpdateMusicVolume();
         }
 
+        private void trackSFX_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            sound.SFXVolume = (float)(trackSFX.Value / 100.0);
+            sound.UpdateSFXVolume();
+        }
+
+        private void btnBack_Click(object sender, RoutedEventArgs e)
+        {
+            _parentWindow.GoBack();
+        }
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
             // Navighează înapoi în Frame-ul care găzduiește Page-ul
