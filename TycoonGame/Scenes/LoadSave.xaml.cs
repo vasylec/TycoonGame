@@ -29,6 +29,13 @@ namespace TycoonGame.Scenes
 
             slot1.Content = App.saveName;
 
+
+        }
+
+        private void LoadSave_Loaded(object sender, RoutedEventArgs e)
+        {
+            // Aplică font și setări vizuale pe tot conținutul ferestrei
+            UIHelper.ApplyPixelFontAndSettings(this);
         }
 
         private void btnMainMenu_Click(object sender, RoutedEventArgs e)

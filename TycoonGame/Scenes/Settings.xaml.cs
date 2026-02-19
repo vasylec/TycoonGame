@@ -14,9 +14,10 @@ namespace TycoonGame.Scenes
             InitializeComponent();
             _parentWindow = parent;
 
-            trackMaster.Value = 100;
-            trackMusic.Value = 100;
-            trackSFX.Value = 100;
+            // Inițializează slider-ele cu valorile curente din SoundManager
+            trackMaster.Value = sound.MasterVolume * 100;
+            trackMusic.Value = sound.MusicVolume * 100;
+            trackSFX.Value = sound.SFXVolume * 100;
         }
 
         private void trackMaster_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -42,9 +43,9 @@ namespace TycoonGame.Scenes
         {
             _parentWindow.GoBack();
         }
+
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
-            // Navighează înapoi în Frame-ul care găzduiește Page-ul
             _parentWindow.GoBack();
         }
     }

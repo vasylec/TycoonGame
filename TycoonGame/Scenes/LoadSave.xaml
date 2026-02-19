@@ -6,38 +6,221 @@
       xmlns:local="clr-namespace:TycoonGame.Scenes"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="LoadSave">
+      Title="LoadSave"
+      Loaded="LoadSave_Loaded">
+
 
     <Grid>
         <Canvas HorizontalAlignment="Center" Height="360" VerticalAlignment="Center" Width="675" Background="DarkGreen">
-            <Canvas Height="74" Canvas.Left="76" Canvas.Top="52" Width="524" Background="Beige" HorizontalAlignment="Left" VerticalAlignment="Top">
-                <Button x:Name="btnLoad" Content="Load" Canvas.Left="118" Canvas.Top="37" HorizontalAlignment="Left" VerticalAlignment="Center" Height="27" Width="108" Cursor="Hand"/>
-                <Button x:Name="btnSave" Content="Save" Canvas.Left="262" Canvas.Top="37" Height="27" Width="108" HorizontalAlignment="Left" VerticalAlignment="Center" Cursor="Hand"/>
-                <Button x:Name="btnDelete" Content="Delete" Canvas.Left="406" Canvas.Top="37" Height="27" Width="108" HorizontalAlignment="Left" VerticalAlignment="Center" Cursor="Hand"/>
-                <Label x:Name="slot1" Content="Slot 1" Canvas.Left="118" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="14"/>
-                <Label Content="Date" Canvas.Left="393" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                <Image Height="68" Canvas.Left="10" Width="64" Source="/Assets/SaveIcon.png" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
-            </Canvas>
-            <Canvas Height="74" Canvas.Left="76" Canvas.Top="143" Width="524" Background="Beige" HorizontalAlignment="Left" VerticalAlignment="Top">
-                <Button x:Name="btnLoad1" Content="Load" Canvas.Left="118" Canvas.Top="37" HorizontalAlignment="Left" VerticalAlignment="Center" Height="27" Width="108" Cursor="Hand"/>
-                <Button x:Name="btnSave1" Content="Save" Canvas.Left="262" Canvas.Top="37" Height="27" Width="108" HorizontalAlignment="Left" VerticalAlignment="Center" Cursor="Hand"/>
-                <Button x:Name="btnDelete1" Content="Delete" Canvas.Left="406" Canvas.Top="37" Height="27" Width="108" HorizontalAlignment="Left" VerticalAlignment="Center" Cursor="Hand"/>
-                <Label Content="Slot 2" Canvas.Left="118" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="14"/>
-                <Label Content="Date" Canvas.Left="393" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                <Image Height="68" Canvas.Left="10" Width="64" Source="/Assets/SaveIcon.png" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            <!-- Slot 1 -->
+            <Canvas Height="74" Canvas.Left="76" Canvas.Top="52" Width="524" Background="Beige">
+                <Label x:Name="slot1" Content="Slot 1" Canvas.Left="118" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                <Label Content="Date" Canvas.Left="393" Canvas.Top="1" FontSize="14" HorizontalAlignment="Center"/>
+                <Image Height="68" Canvas.Left="10" Canvas.Top="3" Width="64" Source="/Assets/SaveIcon.png"/>
 
-            </Canvas>
-            <Canvas Height="74" Canvas.Left="76" Canvas.Top="236" Width="524" Background="Beige" HorizontalAlignment="Left" VerticalAlignment="Top">
-                <Button x:Name="btnLoad2" Content="Load" Canvas.Left="118" Canvas.Top="37" HorizontalAlignment="Left" VerticalAlignment="Center" Height="27" Width="108" Cursor="Hand"/>
-                <Button x:Name="btnSave2" Content="Save" Canvas.Left="262" Canvas.Top="37" Height="27" Width="108" HorizontalAlignment="Left" VerticalAlignment="Center" Cursor="Hand"/>
-                <Button x:Name="btnDelete2" Content="Delete" Canvas.Left="406" Canvas.Top="37" Height="27" Width="108" HorizontalAlignment="Left" VerticalAlignment="Center" Cursor="Hand"/>
-                <Label Content="Slot 3" Canvas.Left="118" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="14"/>
-                <Label Content="Date" Canvas.Left="393" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                <Image Height="68" Canvas.Left="10" Width="64" Source="/Assets/SaveIcon.png" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <!-- Load -->
+                <Button x:Name="btnLoad1" Canvas.Left="118" Canvas.Top="37" Width="90" Height="37" Background="Transparent" BorderThickness="0">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Grid>
+                                <Image x:Name="btnImage" Source="/Assets/Buttons/ButtonLoad.png"/>
+                            </Grid>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="btnImage" Property="Source" Value="/Assets/Buttons/ButtonLoad_Hover.png"/>
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter TargetName="btnImage" Property="Source" Value="/Assets/Buttons/ButtonLoad_Click.png"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
 
+                <!-- Delete -->
+                <Button x:Name="btnDelete1" Canvas.Left="258" Canvas.Top="37" Width="90" Height="37" Background="Transparent" BorderThickness="0">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Grid>
+                                <Image x:Name="btnImage" Source="/Assets/Buttons/ButtonDelete.png"/>
+                            </Grid>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="btnImage" Property="Source" Value="/Assets/Buttons/ButtonDelete_Hover.png"/>
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter TargetName="btnImage" Property="Source" Value="/Assets/Buttons/ButtonDelete_Click.png"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+
+                <!-- Save -->
+                <Button x:Name="btnSave1" Canvas.Left="408" Canvas.Top="37" Width="90" Height="37" Background="Transparent" BorderThickness="0">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Grid>
+                                <Image x:Name="btnImage" Source="/Assets/Buttons/ButtonSave.png"/>
+                            </Grid>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="btnImage" Property="Source" Value="/Assets/Buttons/ButtonSave_Hover.png"/>
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter TargetName="btnImage" Property="Source" Value="/Assets/Buttons/ButtonSave_Click.png"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+                <Label x:Name="slot1_Copy" Content="Load Save" Canvas.Left="-73" Canvas.Top="-55" FontSize="24" HorizontalAlignment="Left" VerticalAlignment="Top" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="672"/>
             </Canvas>
-            <Button x:Name="btnMainMenu" Content="Main Menu" Canvas.Top="10" Height="37" Width="77" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.431,0.438" Canvas.Left="10" Click="btnMainMenu_Click"/>
+
+            <!-- Slot 2 -->
+            <Canvas Height="74" Canvas.Left="76" Canvas.Top="143" Width="524" Background="Beige">
+                <Label x:Name="slot2" Content="Slot 2" Canvas.Left="118" Canvas.Top="1" FontSize="14" HorizontalAlignment="Center"/>
+                <Label Content="Date" Canvas.Left="393" Canvas.Top="1" FontSize="14" HorizontalAlignment="Center"/>
+                <Image Height="68" Canvas.Left="10" Canvas.Top="3" Width="64" Source="/Assets/SaveIcon.png"/>
+
+                <!-- Load -->
+                <Button x:Name="btnLoad2" Canvas.Left="118" Canvas.Top="35" Width="90" Height="37" Background="Transparent" BorderThickness="0">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Grid>
+                                <Image x:Name="btnImage" Source="/Assets/Buttons/ButtonLoad.png"/>
+                            </Grid>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="btnImage" Property="Source" Value="/Assets/Buttons/ButtonLoad_Hover.png"/>
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter TargetName="btnImage" Property="Source" Value="/Assets/Buttons/ButtonLoad_Click.png"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+
+                <!-- Delete -->
+                <Button x:Name="btnDelete2" Canvas.Left="258" Canvas.Top="35" Width="90" Height="37" Background="Transparent" BorderThickness="0">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Grid>
+                                <Image x:Name="btnImage" Source="/Assets/Buttons/ButtonDelete.png"/>
+                            </Grid>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="btnImage" Property="Source" Value="/Assets/Buttons/ButtonDelete_Hover.png"/>
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter TargetName="btnImage" Property="Source" Value="/Assets/Buttons/ButtonDelete_Click.png"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+
+                <!-- Save -->
+                <Button x:Name="btnSave2" Canvas.Left="408" Canvas.Top="35" Width="90" Height="37" Background="Transparent" BorderThickness="0">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Grid>
+                                <Image x:Name="btnImage" Source="/Assets/Buttons/ButtonSave.png"/>
+                            </Grid>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="btnImage" Property="Source" Value="/Assets/Buttons/ButtonSave_Hover.png"/>
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter TargetName="btnImage" Property="Source" Value="/Assets/Buttons/ButtonSave_Click.png"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+            </Canvas>
+
+            <!-- Slot 3 -->
+            <Canvas Height="74" Canvas.Left="76" Canvas.Top="236" Width="524" Background="Beige">
+                <Label x:Name="slot3" Content="Slot 3" Canvas.Left="118" Canvas.Top="1" FontSize="14" HorizontalAlignment="Center"/>
+                <Label Content="Date" Canvas.Left="393" Canvas.Top="1" FontSize="14" HorizontalAlignment="Center"/>
+                <Image Height="68" Canvas.Left="10" Canvas.Top="3" Width="64" Source="/Assets/SaveIcon.png"/>
+
+                <!-- Load -->
+                <Button x:Name="btnLoad3" Canvas.Left="118" Canvas.Top="35" Width="90" Height="37" Background="Transparent" BorderThickness="0">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Grid>
+                                <Image x:Name="btnImage" Source="/Assets/Buttons/ButtonLoad.png"/>
+                            </Grid>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="btnImage" Property="Source" Value="/Assets/Buttons/ButtonLoad_Hover.png"/>
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter TargetName="btnImage" Property="Source" Value="/Assets/Buttons/ButtonLoad_Click.png"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+
+                <!-- Delete -->
+                <Button x:Name="btnDelete3" Canvas.Left="258" Canvas.Top="35" Width="90" Height="37" Background="Transparent" BorderThickness="0">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Grid>
+                                <Image x:Name="btnImage" Source="/Assets/Buttons/ButtonDelete.png"/>
+                            </Grid>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="btnImage" Property="Source" Value="/Assets/Buttons/ButtonDelete_Hover.png"/>
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter TargetName="btnImage" Property="Source" Value="/Assets/Buttons/ButtonDelete_Click.png"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+
+                <!-- Save -->
+                <Button x:Name="btnSave3" Canvas.Left="408" Canvas.Top="35" Width="90" Height="37" Background="Transparent" BorderThickness="0">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Grid>
+                                <Image x:Name="btnImage" Source="/Assets/Buttons/ButtonSave.png"/>
+                            </Grid>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="btnImage" Property="Source" Value="/Assets/Buttons/ButtonSave_Hover.png"/>
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter TargetName="btnImage" Property="Source" Value="/Assets/Buttons/ButtonSave_Click.png"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+            </Canvas>
+
+            <!-- Buton Main Menu -->
+            <Button x:Name="btnMainMenu" Content="Main Menu" Canvas.Top="10" Height="46" Width="49" Canvas.Left="10" Click="btnMainMenu_Click">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Grid>
+                            <Image x:Name="btnImage" Source="/Assets/Buttons/ButtonBackArrow.png"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="btnImage" Property="Source" Value="/Assets/Buttons/ButtonBackArrow_Click.png"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
         </Canvas>
     </Grid>
 </Page>

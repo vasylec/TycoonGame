@@ -2,21 +2,18 @@
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 
 namespace TycoonGame.Scenes
 {
-    /// <summary>
-    /// Interaction logic for MainMenu.xaml
-    /// </summary>
     public partial class MainMenu : Window
     {
         private UIElement _originalContent;
         private UIElement _currentContent;
         private static MainMenu _instance;
 
-        // Font pixel art Daydream
         private FontFamily _pixelFont;
 
         public MainMenu()
@@ -30,19 +27,53 @@ namespace TycoonGame.Scenes
             _instance = this;
             _originalContent = this.Content as UIElement;
 
-            // Încarcă font pixel art Daydream
-            _pixelFont = new FontFamily(
-                new Uri("pack://application:,,,/"),
-                        "./Assets/Fonts/#Daydream" 
-            );
+            // Font pixel art
+            _pixelFont = new FontFamily(new Uri("pack://application:,,,/"), "./Assets/Fonts/#Daydream");
+
+            // Setăm cursorul implicit global
+            this.Cursor = App.NormalCursor;
 
             this.Loaded += MainMenu_Loaded;
         }
+
         private void MainMenu_Loaded(object sender, RoutedEventArgs e)
         {
-            ApplyPixelFont(this);
+            // Aplică font și setări vizuale pe tot conținutul ferestrei
+            UIHelper.ApplyPixelFontAndSettings(this);
+
+            // Aplicăm hover cursor pe butoane
+            AttachCursorEvents(this);
         }
-        // Recursiv aplică font pixel art la toate Button, Label și TextBlock
+
+
+        private void AttachCursorEvents(DependencyObject parent)
+        {
+            int count = VisualTreeHelper.GetChildrenCount(parent);
+
+            for (int i = 0; i < count; i++)
+            {
+                var child = VisualTreeHelper.GetChild(parent, i);
+
+                if (child is Button btn)
+                {
+                    // Setăm cursor doar pe acest buton
+                    btn.Cursor = App.NormalCursor; // inițial pointer
+                    btn.MouseEnter += (s, e) =>
+                    {
+                        btn.Cursor = App.HoverCursor; // hand la hover
+                    };
+                    btn.MouseLeave += (s, e) =>
+                    {
+                        btn.Cursor = App.NormalCursor; // revine la pointer
+                    };
+                }
+
+                // Recursiv pentru copii
+                AttachCursorEvents(child);
+            }
+        }
+
+        // Aplică font pixel art recursiv
         private void ApplyPixelFont(DependencyObject parent)
         {
             int count = VisualTreeHelper.GetChildrenCount(parent);
@@ -65,22 +96,19 @@ namespace TycoonGame.Scenes
                     img.UseLayoutRounding = true;
                 }
 
-
-
-                ApplyPixelFont(child); // recursiv
+                ApplyPixelFont(child);
             }
         }
 
         private async void FadeTransition(UIElement oldContent, UIElement newContent)
         {
-            // Fade OUT pagina veche
             if (oldContent != null)
             {
-                DoubleAnimation fadeOut = new DoubleAnimation(1, 0, TimeSpan.FromSeconds(0.3));
+                DoubleAnimation fadeOut =
+                    new DoubleAnimation(1, 0, TimeSpan.FromSeconds(0.3));
                 oldContent.BeginAnimation(UIElement.OpacityProperty, fadeOut);
             }
 
-            // Setează pagina nouă INVIZIBILĂ și fade IN
             if (newContent != null)
             {
                 newContent.Opacity = 0;
@@ -88,10 +116,16 @@ namespace TycoonGame.Scenes
                 _currentContent = newContent;
 
                 await Task.Delay(50);
-                DoubleAnimation fadeIn = new DoubleAnimation(0, 1, TimeSpan.FromSeconds(0.3));
+
+                DoubleAnimation fadeIn =
+                    new DoubleAnimation(0, 1, TimeSpan.FromSeconds(0.3));
                 newContent.BeginAnimation(UIElement.OpacityProperty, fadeIn);
+
+                // 🔥 Atașăm hover cursori la butoanele din pagina nouă
+                AttachCursorEvents(newContent);
             }
         }
+
 
         public void GoBack()
         {
@@ -106,6 +140,7 @@ namespace TycoonGame.Scenes
             FadeTransition(this.Content as UIElement, page);
             this.Content = page;
             _currentContent = page;
+
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
@@ -116,11 +151,6 @@ namespace TycoonGame.Scenes
             _currentContent = settings;
         }
 
-        private void exitButtonClick(object sender, RoutedEventArgs e)
-        {
-            this.Close();
-        }
-
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
             LoadSave loadsave = new LoadSave(this);
@@ -128,23 +158,28 @@ namespace TycoonGame.Scenes
             this.Content = loadsave;
             _currentContent = loadsave;
         }
+
+        private void exitButtonClick(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
         private void btnShowPopup_Click(object sender, RoutedEventArgs e)
         {
-            popupContainer.Visibility = Visibility.Visible; // arată popup-ul
-
-            newGameTextBlock.Text = "Enter your save name !"; 
+            popupContainer.Visibility = Visibility.Visible;
+            newGameTextBlock.Text = "Enter your save name !";
             newGameTextBox.Text = "";
         }
 
         private void ClosePopup_Click(object sender, RoutedEventArgs e)
         {
-            popupContainer.Visibility = Visibility.Collapsed; // ascunde popup-ul
+            popupContainer.Visibility = Visibility.Collapsed;
         }
 
         private void btn_newGame(object sender, RoutedEventArgs e)
         {
             App.saveName = newGameTextBox.Text;
-            
+
             if (string.IsNullOrWhiteSpace(App.saveName))
             {
                 MessageBox.Show("Please enter a valid game title.");
@@ -152,10 +187,12 @@ namespace TycoonGame.Scenes
             }
 
             newGameTextBlock.Text = $"Starting new game: {App.saveName}";
+        }
 
-
-
+        private void Button_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
 
         }
     }
 }
+    
