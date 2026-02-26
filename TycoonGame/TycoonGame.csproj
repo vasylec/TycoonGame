@@ -33,6 +33,7 @@
     <None Remove="Assets\Cursors\hand.cur" />
     <None Remove="Assets\Cursors\pointer.cur" />
     <None Remove="Assets\Fonts\Daydream DEMO.otf" />
+    <None Remove="Assets\MainMenuBackground.png" />
     <None Remove="Assets\SaveIcon.png" />
     <None Remove="Assets\Sounds\music.mp3" />
     <None Remove="Assets\Sounds\sfx.wav" />
@@ -99,6 +100,9 @@
     <Content Include="Assets\Buttons\ButtonX_Click.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Assets\MainMenuBackground.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
@@ -131,6 +135,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Sounds\sfx.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Sounds\select_005.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

@@ -4,6 +4,30 @@
         Title="MainMenu" Height="450" Width="800">
 
     <Grid x:Name="MainGrid">
+        <Rectangle>
+            <Rectangle.Fill>
+                <ImageBrush x:Name="AnimatedBackgroundBrush"
+                            Stretch="UniformToFill"
+                            Opacity="0.95"
+                            TileMode="Tile"
+                            ViewportUnits="RelativeToBoundingBox"
+                            Viewport="0,0,1,1"
+                            AlignmentX="Left"
+                            AlignmentY="Top">
+                    <ImageBrush.RelativeTransform>
+                        <TransformGroup>
+                            <ScaleTransform ScaleX="1.18" ScaleY="1.18" CenterX="0.5" CenterY="0.5"/>
+                            <TranslateTransform x:Name="BackgroundTranslate" X="0" Y="0"/>
+                        </TransformGroup>
+                    </ImageBrush.RelativeTransform>
+                </ImageBrush>
+            </Rectangle.Fill>
+            <Rectangle.Effect>
+                <BlurEffect Radius="4"/>
+            </Rectangle.Effect>
+        </Rectangle>
+
+        <Border Background="#4A000000"/>
 
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="24,10,0,0">
             <Label Content="Tycoon Game" Margin="0,20,0,20" FontSize="48" FontWeight="Bold"/>

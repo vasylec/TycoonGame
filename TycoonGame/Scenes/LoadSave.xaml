@@ -11,7 +11,32 @@
 
 
     <Grid>
-        <Canvas HorizontalAlignment="Center" Height="360" VerticalAlignment="Center" Width="675" Background="DarkGreen">
+        <Rectangle>
+            <Rectangle.Fill>
+                <ImageBrush x:Name="AnimatedBackgroundBrush"
+                            Stretch="UniformToFill"
+                            Opacity="0.95"
+                            TileMode="Tile"
+                            ViewportUnits="RelativeToBoundingBox"
+                            Viewport="0,0,1,1"
+                            AlignmentX="Left"
+                            AlignmentY="Top">
+                    <ImageBrush.RelativeTransform>
+                        <TransformGroup>
+                            <ScaleTransform ScaleX="1.18" ScaleY="1.18" CenterX="0.5" CenterY="0.5"/>
+                            <TranslateTransform x:Name="BackgroundTranslate" X="0" Y="0"/>
+                        </TransformGroup>
+                    </ImageBrush.RelativeTransform>
+                </ImageBrush>
+            </Rectangle.Fill>
+            <Rectangle.Effect>
+                <BlurEffect Radius="4"/>
+            </Rectangle.Effect>
+        </Rectangle>
+
+        <Border Background="#4A000000"/>
+
+        <Canvas HorizontalAlignment="Center" Height="360" VerticalAlignment="Center" Width="675" Background="#AA0A2A0A">
 
             <!-- Slot 1 -->
             <Canvas Height="74" Canvas.Left="76" Canvas.Top="52" Width="524" Background="Beige">
@@ -20,7 +45,7 @@
                 <Image Height="68" Canvas.Left="10" Canvas.Top="3" Width="64" Source="/Assets/SaveIcon.png"/>
 
                 <!-- Load -->
-                <Button x:Name="btnLoad1" Canvas.Left="118" Canvas.Top="37" Width="90" Height="37" Background="Transparent" BorderThickness="0">
+                <Button x:Name="btnLoad1" Canvas.Left="118" Canvas.Top="37" Width="90" Height="37" Background="Transparent" BorderThickness="0" Click="btnLoad1_Click">
                     <Button.Template>
                         <ControlTemplate TargetType="Button">
                             <Grid>
@@ -85,7 +110,7 @@
                 <Image Height="68" Canvas.Left="10" Canvas.Top="3" Width="64" Source="/Assets/SaveIcon.png"/>
 
                 <!-- Load -->
-                <Button x:Name="btnLoad2" Canvas.Left="118" Canvas.Top="35" Width="90" Height="37" Background="Transparent" BorderThickness="0">
+                <Button x:Name="btnLoad2" Canvas.Left="118" Canvas.Top="35" Width="90" Height="37" Background="Transparent" BorderThickness="0" Click="btnLoad2_Click">
                     <Button.Template>
                         <ControlTemplate TargetType="Button">
                             <Grid>
@@ -149,7 +174,7 @@
                 <Image Height="68" Canvas.Left="10" Canvas.Top="3" Width="64" Source="/Assets/SaveIcon.png"/>
 
                 <!-- Load -->
-                <Button x:Name="btnLoad3" Canvas.Left="118" Canvas.Top="35" Width="90" Height="37" Background="Transparent" BorderThickness="0">
+                <Button x:Name="btnLoad3" Canvas.Left="118" Canvas.Top="35" Width="90" Height="37" Background="Transparent" BorderThickness="0" Click="btnLoad3_Click">
                     <Button.Template>
                         <ControlTemplate TargetType="Button">
                             <Grid>

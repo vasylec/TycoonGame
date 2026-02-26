@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Resources;
 using TycoonGame.Scripts;
@@ -29,12 +30,11 @@ namespace TycoonGame
             NormalCursor = LoadCursor("Assets/Cursors/pointer.cur");
             HoverCursor = LoadCursor("Assets/Cursors/hand.cur");
 
-            // Aplică click sound global după ce fereastra principală e gata
-            this.Startup += (s, ev) =>
-            {
-                if (Current.MainWindow != null)
-                    AttachClickSoundRecursive(Current.MainWindow);
-            };
+            // Click sound global pe toate butoanele (inclusiv cele încărcate dinamic)
+            EventManager.RegisterClassHandler(
+                typeof(ButtonBase),
+                ButtonBase.ClickEvent,
+                new RoutedEventHandler((_, __) => Sound.PlayClick()));
         }
 
         private static Cursor LoadCursor(string path)

@@ -5,6 +5,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
+using System.Windows.Media.Imaging;
 
 namespace TycoonGame.Scenes
 {
@@ -22,7 +23,7 @@ namespace TycoonGame.Scenes
 
             this.WindowState = WindowState.Maximized;
             this.WindowStyle = WindowStyle.None;
-            this.Topmost = true;
+            this.Topmost = false;
 
             _instance = this;
             _originalContent = this.Content as UIElement;
@@ -38,11 +39,9 @@ namespace TycoonGame.Scenes
 
         private void MainMenu_Loaded(object sender, RoutedEventArgs e)
         {
-            // Aplică font și setări vizuale pe tot conținutul ferestrei
             UIHelper.ApplyPixelFontAndSettings(this);
-
-            // Aplicăm hover cursor pe butoane
             AttachCursorEvents(this);
+            SetupAnimatedBackground();
         }
 
 
@@ -121,11 +120,61 @@ namespace TycoonGame.Scenes
                     new DoubleAnimation(0, 1, TimeSpan.FromSeconds(0.3));
                 newContent.BeginAnimation(UIElement.OpacityProperty, fadeIn);
 
-                // 🔥 Atașăm hover cursori la butoanele din pagina nouă
                 AttachCursorEvents(newContent);
             }
         }
 
+        private void SetupAnimatedBackground()
+        {
+            string[] candidates =
+            {
+                "Assets\\MainMenuBackground.png"
+            };
+                
+            foreach (var rel in candidates)
+            {
+                try
+                {
+                    string fullPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, rel);
+                    if (!System.IO.File.Exists(fullPath))
+                        continue;
+
+                    var img = new BitmapImage();
+                    img.BeginInit();
+                    img.UriSource = new Uri(fullPath, UriKind.Absolute);
+                    img.DecodePixelWidth = 1920;
+                    img.CacheOption = BitmapCacheOption.OnLoad;
+                    img.CreateOptions = BitmapCreateOptions.IgnoreColorProfile;
+                    img.EndInit();
+                    img.Freeze();
+
+                    AnimatedBackgroundBrush.ImageSource = img;
+                    break;
+                }
+                catch
+                {
+                }
+            }
+
+            var animX = new DoubleAnimation
+            {
+                From = 0,
+                To = 1,
+                Duration = TimeSpan.FromSeconds(80),
+                RepeatBehavior = RepeatBehavior.Forever
+            };
+
+            var animY = new DoubleAnimation
+            {
+                From = 0,
+                To = 1,
+                Duration = TimeSpan.FromSeconds(110),
+                RepeatBehavior = RepeatBehavior.Forever
+            };
+
+            BackgroundTranslate.BeginAnimation(TranslateTransform.XProperty, animX);
+            BackgroundTranslate.BeginAnimation(TranslateTransform.YProperty, animY);
+        }
 
         public void GoBack()
         {
@@ -134,29 +183,29 @@ namespace TycoonGame.Scenes
             this.Content = _originalContent;
         }
 
+        public void NavigateTo(UIElement newContent)
+        {
+            FadeTransition(this.Content as UIElement, newContent);
+            this.Content = newContent;
+            _currentContent = newContent;
+        }
+
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             Page1 page = new Page1(this);
-            FadeTransition(this.Content as UIElement, page);
-            this.Content = page;
-            _currentContent = page;
-
+            NavigateTo(page);
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             Settings settings = new Settings(this);
-            FadeTransition(this.Content as UIElement, settings);
-            this.Content = settings;
-            _currentContent = settings;
+            NavigateTo(settings);
         }
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
             LoadSave loadsave = new LoadSave(this);
-            FadeTransition(this.Content as UIElement, loadsave);
-            this.Content = loadsave;
-            _currentContent = loadsave;
+            NavigateTo(loadsave);
         }
 
         private void exitButtonClick(object sender, RoutedEventArgs e)
