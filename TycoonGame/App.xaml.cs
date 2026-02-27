@@ -12,6 +12,7 @@ namespace TycoonGame
     {
         public static SoundManager Sound { get; private set; } = null!;
         public static string saveName = "";
+        public static int currentSlot = 1;
 
         // Cursori globali
         public static Cursor NormalCursor { get; private set; } = null!;

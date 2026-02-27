@@ -1,65 +1,92 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Windows.Media.Animation;
+using System.Windows.Media.Imaging;
+using TycoonGame.Scripts;
 
 namespace TycoonGame.Scenes
 {
-    /// <summary>
-    /// Interaction logic for LoadSave.xaml
-    /// </summary>
     public partial class LoadSave : Page
     {
-        private MainMenu _parentWindow;
+        private readonly MainMenu _parentWindow;
 
         public LoadSave(MainMenu parent)
         {
             InitializeComponent();
             _parentWindow = parent;
-
-            slot1.Content = App.saveName;
-
-
         }
 
         private void LoadSave_Loaded(object sender, RoutedEventArgs e)
         {
             UIHelper.ApplyPixelFontAndSettings(this);
             SetupAnimatedBackground();
+            RefreshSlots();
         }
 
-        private void btnMainMenu_Click(object sender, RoutedEventArgs e)
+        private void RefreshSlots()
         {
-            _parentWindow.GoBack();
+            PaintSlot(1, slot1, slotDate1);
+            PaintSlot(2, slot2, slotDate2);
+            PaintSlot(3, slot3, slotDate3);
         }
 
-        private void btnLoad1_Click(object sender, RoutedEventArgs e)
+        private static void PaintSlot(int slot, Label name, Label date)
         {
-            App.saveName = "Slot 1";
+            var data = SaveSystem.LoadSlot(slot);
+            if (data == null)
+            {
+                name.Content = $"Slot {slot} - Empty";
+                date.Content = "No save";
+                return;
+            }
+
+            name.Content = $"{data.SaveName} | ${data.Money:0} | Pop {data.Population}";
+            date.Content = data.SavedAtUtc.ToLocalTime().ToString("dd.MM.yyyy HH:mm");
+        }
+
+        private void btnMainMenu_Click(object sender, RoutedEventArgs e) => _parentWindow.GoBack();
+
+        private void btnLoad1_Click(object sender, RoutedEventArgs e) => LoadSlot(1);
+        private void btnLoad2_Click(object sender, RoutedEventArgs e) => LoadSlot(2);
+        private void btnLoad3_Click(object sender, RoutedEventArgs e) => LoadSlot(3);
+
+        private void btnSave1_Click(object sender, RoutedEventArgs e) => PrepareSlotAndStart(1);
+        private void btnSave2_Click(object sender, RoutedEventArgs e) => PrepareSlotAndStart(2);
+        private void btnSave3_Click(object sender, RoutedEventArgs e) => PrepareSlotAndStart(3);
+
+        private void btnDelete1_Click(object sender, RoutedEventArgs e) => DeleteSlot(1);
+        private void btnDelete2_Click(object sender, RoutedEventArgs e) => DeleteSlot(2);
+        private void btnDelete3_Click(object sender, RoutedEventArgs e) => DeleteSlot(3);
+
+        private void LoadSlot(int slot)
+        {
+            if (!SaveSystem.SlotExists(slot))
+            {
+                MessageBox.Show($"Slot {slot} is empty.");
+                return;
+            }
+
+            var data = SaveSystem.LoadSlot(slot)!;
+            App.currentSlot = slot;
+            App.saveName = data.SaveName;
             _parentWindow.NavigateTo(new Page1(_parentWindow));
         }
 
-        private void btnLoad2_Click(object sender, RoutedEventArgs e)
+        private void PrepareSlotAndStart(int slot)
         {
-            App.saveName = "Slot 2";
+            App.currentSlot = slot;
+            if (string.IsNullOrWhiteSpace(App.saveName))
+                App.saveName = $"Slot {slot}";
+
             _parentWindow.NavigateTo(new Page1(_parentWindow));
         }
 
-        private void btnLoad3_Click(object sender, RoutedEventArgs e)
+        private void DeleteSlot(int slot)
         {
-            App.saveName = "Slot 3";
-            _parentWindow.NavigateTo(new Page1(_parentWindow));
+            SaveSystem.DeleteSlot(slot);
+            RefreshSlots();
         }
 
         private void SetupAnimatedBackground()
@@ -85,9 +112,7 @@ namespace TycoonGame.Scenes
                 BackgroundTranslate.BeginAnimation(TranslateTransform.XProperty, animX);
                 BackgroundTranslate.BeginAnimation(TranslateTransform.YProperty, animY);
             }
-            catch
-            {
-            }
+            catch { }
         }
     }
 }

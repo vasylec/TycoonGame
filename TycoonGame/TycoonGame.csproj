@@ -9,6 +9,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Assets\Buildings\BuildingBeige.png" />
+    <None Remove="Assets\Buildings\BuildingBeige_LVL2.png" />
+    <None Remove="Assets\Buildings\BuildingBlue.png" />
+    <None Remove="Assets\Buildings\BuildingBlue_LVL2.png" />
+    <None Remove="Assets\Buildings\BuildingWhite.png" />
+    <None Remove="Assets\Buildings\BuildingWhite_LVL2.png" />
     <None Remove="Assets\ButtonLoad.png" />
     <None Remove="Assets\Buttons\ButtonBackArrow.png" />
     <None Remove="Assets\Buttons\ButtonBackArrow_Click.png" />
@@ -40,6 +46,24 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="Assets\Buildings\BuildingBeige.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Buildings\BuildingBeige_LVL2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Buildings\BuildingBlue.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Buildings\BuildingBlue_LVL2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Buildings\BuildingWhite.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Buildings\BuildingWhite_LVL2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Assets\Buttons\ButtonBackArrow.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

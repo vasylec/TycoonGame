@@ -6,6 +6,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
+using TycoonGame.Scripts;
 
 namespace TycoonGame.Scenes
 {
@@ -235,7 +236,32 @@ namespace TycoonGame.Scenes
                 return;
             }
 
-            newGameTextBlock.Text = $"Starting new game: {App.saveName}";
+            int? firstEmptySlot = FindFirstEmptySlot();
+
+            if (firstEmptySlot.HasValue)
+            {
+                App.currentSlot = firstEmptySlot.Value;
+                newGameTextBlock.Text = $"Starting new game in slot {App.currentSlot}: {App.saveName}";
+                popupContainer.Visibility = Visibility.Collapsed;
+                NavigateTo(new Page1(this));
+                return;
+            }
+
+            // All slots occupied -> user must choose a slot in Load/Save page
+            popupContainer.Visibility = Visibility.Collapsed;
+            MessageBox.Show("All slots are occupied. Choose where to save from the Load/Save page.");
+            NavigateTo(new LoadSave(this));
+        }
+
+        private int? FindFirstEmptySlot()
+        {
+            for (int slot = 1; slot <= 3; slot++)
+            {
+                if (!SaveSystem.SlotExists(slot))
+                    return slot;
+            }
+
+            return null;
         }
 
         private void Button_PreviewMouseDown(object sender, MouseButtonEventArgs e)

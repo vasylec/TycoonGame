@@ -13,6 +13,7 @@ namespace TycoonGame.Scenes
     {
         private SoundManager sound => App.Sound;
         private MainMenu _parentWindow;
+        private UIElement? _backTarget;
         private bool _isInitializing;
 
         public Settings(MainMenu parent)
@@ -53,14 +54,27 @@ namespace TycoonGame.Scenes
             sound.UpdateSFXVolume();
         }
 
+        public Settings(MainMenu parent, UIElement backTarget) : this(parent)
+        {
+            _backTarget = backTarget;
+        }
+
         private void btnBack_Click(object sender, RoutedEventArgs e)
         {
-            _parentWindow.GoBack();
+            NavigateBack();
         }
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
-            _parentWindow.GoBack();
+            NavigateBack();
+        }
+
+        private void NavigateBack()
+        {
+            if (_backTarget != null)
+                _parentWindow.NavigateTo(_backTarget);
+            else
+                _parentWindow.GoBack();
         }
 
         private void Settings_Loaded(object sender, RoutedEventArgs e)
