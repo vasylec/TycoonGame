@@ -11,10 +11,13 @@
   <ItemGroup>
     <None Remove="Assets\Buildings\BuildingBeige.png" />
     <None Remove="Assets\Buildings\BuildingBeige_LVL2.png" />
+    <None Remove="Assets\Buildings\BuildingBeige_LVL3.png" />
     <None Remove="Assets\Buildings\BuildingBlue.png" />
     <None Remove="Assets\Buildings\BuildingBlue_LVL2.png" />
+    <None Remove="Assets\Buildings\BuildingBlue_LVL3.png" />
     <None Remove="Assets\Buildings\BuildingWhite.png" />
     <None Remove="Assets\Buildings\BuildingWhite_LVL2.png" />
+    <None Remove="Assets\Buildings\BuildingWhite_LVL3.png" />
     <None Remove="Assets\ButtonLoad.png" />
     <None Remove="Assets\Buttons\ButtonBackArrow.png" />
     <None Remove="Assets\Buttons\ButtonBackArrow_Click.png" />
@@ -43,6 +46,7 @@
     <None Remove="Assets\SaveIcon.png" />
     <None Remove="Assets\Sounds\music.mp3" />
     <None Remove="Assets\Sounds\sfx.wav" />
+    <None Remove="Assets\UI\WoodPanel.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -52,16 +56,25 @@
     <Content Include="Assets\Buildings\BuildingBeige_LVL2.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Assets\Buildings\BuildingBeige_LVL3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Assets\Buildings\BuildingBlue.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Buildings\BuildingBlue_LVL2.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Assets\Buildings\BuildingBlue_LVL3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Assets\Buildings\BuildingWhite.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Buildings\BuildingWhite_LVL2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Buildings\BuildingWhite_LVL3.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Buttons\ButtonBackArrow.png">
@@ -125,6 +138,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\MainMenuBackground.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\UI\WoodPanel.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

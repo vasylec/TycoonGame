@@ -1,4 +1,4 @@
-﻿<Page x:Class="TycoonGame.Scenes.Page1"
+<Page x:Class="TycoonGame.Scenes.Page1"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -85,44 +85,54 @@
             </Grid.ColumnDefinitions>
 
             <!-- Build palette -->
-            <Border Grid.Column="0" Margin="10" Padding="10" Background="#CC1F2937" CornerRadius="10" BorderBrush="#334155" BorderThickness="1">
+            <Border Grid.Column="0" Margin="10" Padding="10" CornerRadius="10" BorderBrush="#334155" BorderThickness="1"
+                    SnapsToDevicePixels="True"
+                    UseLayoutRounding="True"
+                    RenderOptions.BitmapScalingMode="NearestNeighbor">
+                <Border.Background>
+                    <ImageBrush ImageSource="/Assets/UI/WoodPanel.png"
+                                Stretch="Fill"
+                                AlignmentX="Center"
+                                AlignmentY="Center"
+                                RenderOptions.BitmapScalingMode="NearestNeighbor"/>
+                </Border.Background>
                 <StackPanel>
                     <TextBlock Text="Build Menu" FontSize="22" FontWeight="Bold" Foreground="#E5E7EB" Margin="0,0,0,10"/>
-                    <TextBlock Text="1) Selectezi clÄƒdire È™i dai click pe lot" Foreground="#CBD5E1" TextWrapping="Wrap"/>
-                    <TextBlock Text="2) Sau drag &amp; drop clÄƒdire pe lot" Foreground="#CBD5E1" TextWrapping="Wrap" Margin="0,0,0,12"/>
+                    <TextBlock Text="1) Selectezi clădire și dai click pe lot" Foreground="#CBD5E1" TextWrapping="Wrap"/>
+                    <TextBlock Text="2) Sau drag &amp; drop clădire pe lot" Foreground="#CBD5E1" TextWrapping="Wrap" Margin="0,0,0,12"/>
 
-                    <Button x:Name="BtnHouse" Tag="House" Height="72" Margin="0,0,0,8"
+                    <Button x:Name="BtnHouse" Tag="House" Height="84" Margin="0,0,0,8"
                             PreviewMouseLeftButtonDown="SelectBuilding_MouseDown"
                             PreviewMouseMove="Building_PreviewMouseMove">
                         <DockPanel>
-                            <Image Source="/Assets/Buildings/BuildingBeige.png" Width="60" Height="60" Margin="0,0,10,0"/>
+                            <Image Source="/Assets/Buildings/BuildingBeige.png" Width="72" Height="72" Margin="0,0,10,0"/>
                             <StackPanel>
                                 <TextBlock Text="House" FontWeight="Bold"/>
-                                <TextBlock Text="Cost: $100 | +6/s | Pop +4" FontSize="11"/>
+                                <TextBlock Text="Cost: $120 | +3/s | Pop +4" FontSize="11"/>
                             </StackPanel>
                         </DockPanel>
                     </Button>
 
-                    <Button x:Name="BtnShop" Tag="Shop" Height="72" Margin="0,0,0,8"
+                    <Button x:Name="BtnShop" Tag="Shop" Height="84" Margin="0,0,0,8"
                             PreviewMouseLeftButtonDown="SelectBuilding_MouseDown"
                             PreviewMouseMove="Building_PreviewMouseMove">
                         <DockPanel>
-                            <Image Source="/Assets/Buildings/BuildingBlue.png" Width="60" Height="60" Margin="0,0,10,0"/>
+                            <Image Source="/Assets/Buildings/BuildingBlue.png" Width="72" Height="72" Margin="0,0,10,0"/>
                             <StackPanel>
                                 <TextBlock Text="Shop" FontWeight="Bold"/>
-                                <TextBlock Text="Cost: $220 | +12/s | Pop +2" FontSize="11"/>
+                                <TextBlock Text="Cost: $260 | +5/s | Pop +2" FontSize="11"/>
                             </StackPanel>
                         </DockPanel>
                     </Button>
 
-                    <Button x:Name="BtnFactory" Tag="Factory" Height="72" Margin="0,0,0,12"
+                    <Button x:Name="BtnFactory" Tag="Factory" Height="84" Margin="0,0,0,12"
                             PreviewMouseLeftButtonDown="SelectBuilding_MouseDown"
                             PreviewMouseMove="Building_PreviewMouseMove">
                         <DockPanel>
-                            <Image Source="/Assets/Buildings/BuildingWhite.png" Width="60" Height="60" Margin="0,0,10,0"/>
+                            <Image Source="/Assets/Buildings/BuildingWhite.png" Width="72" Height="72" Margin="0,0,10,0"/>
                             <StackPanel>
                                 <TextBlock Text="Factory" FontWeight="Bold"/>
-                                <TextBlock Text="Cost: $300 | +18/s | Pop +1" FontSize="11"/>
+                                <TextBlock Text="Cost: $380 | +7/s | Pop +1" FontSize="11"/>
                             </StackPanel>
                         </DockPanel>
                     </Button>
@@ -182,7 +192,7 @@
                             </Border.RenderTransform>
                             <StackPanel Margin="10">
                                 <TextBlock Text="Upgrade" Foreground="White" FontSize="18" FontWeight="Bold"/>
-                                <Image x:Name="UpgradePreviewImage" Width="96" Height="72" Margin="0,8,0,6" HorizontalAlignment="Center"/>
+                                <Image x:Name="UpgradePreviewImage" Width="124" Height="92" Margin="0,8,0,6" HorizontalAlignment="Center"/>
                                 <TextBlock x:Name="UpgradeStatsText" Foreground="#E2E8F0" TextWrapping="Wrap" FontSize="12"/>
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
                                     <Button Content="Close" Width="60" Margin="0,0,8,0" Click="UpgradeClose_Click"/>
@@ -197,9 +207,40 @@
         </Grid>
 
         <Border Grid.Row="2" Background="#DD0F172A" Padding="10">
-            <TextBlock x:Name="StatusText" Text="Alege o clÄƒdire È™i plaseazÄƒ pe lot." Foreground="#E2E8F0" FontSize="14"/>
+            <TextBlock x:Name="StatusText" Text="Alege o clădire și plasează pe lot." Foreground="#E2E8F0" FontSize="14"/>
         </Border>
 
+        <!-- Event popup -->
+        <Border x:Name="EventPopup"
+                Grid.RowSpan="3"
+                Width="560"
+                MinHeight="96"
+                Padding="16"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Background="#FEE2E2"
+                BorderBrush="#7F1D1D"
+                BorderThickness="3"
+                CornerRadius="14"
+                Visibility="Collapsed"
+                Opacity="0"
+                IsHitTestVisible="False"
+                Panel.ZIndex="2000"
+                RenderTransformOrigin="0.5,0.5">
+            <Border.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform x:Name="EventPopupScale" ScaleX="0.85" ScaleY="0.85"/>
+                    <TranslateTransform x:Name="EventPopupTranslate" Y="-220"/>
+                </TransformGroup>
+            </Border.RenderTransform>
+            <TextBlock x:Name="EventPopupText"
+                       Text="Event!"
+                       FontSize="22"
+                       FontWeight="ExtraBold"
+                       Foreground="#7F1D1D"
+                       TextAlignment="Center"
+                       TextWrapping="Wrap"/>
+        </Border>
         <!-- Drag ghost overlay -->
         <Canvas Grid.RowSpan="3" IsHitTestVisible="False" Panel.ZIndex="999">
             <Image x:Name="DragGhost"
@@ -214,6 +255,10 @@
         </Canvas>
     </Grid>
 </Page>
+
+
+
+
 
 
 

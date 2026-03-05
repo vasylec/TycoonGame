@@ -17,8 +17,13 @@ namespace TycoonGame.Scenes
     {
         private readonly MainMenu _parentWindow;
         private readonly DispatcherTimer _gameTimer;
+        private readonly Random _rng = new();
+        private decimal _incomeMultiplier = 1m;
+        private int _eventTicksRemaining;
+        private int _ticksUntilNextEvent;
+        private readonly DispatcherTimer _eventPopupTimer = new() { Interval = TimeSpan.FromSeconds(2.2) };
 
-        private decimal _money = 250;
+        private decimal _money = 300;
         private int _population = 0;
 
         private readonly List<LotState> _lots = new();
@@ -26,9 +31,18 @@ namespace TycoonGame.Scenes
 
         private readonly Dictionary<string, BuildingDef> _defs = new()
         {
-            ["House"] = new BuildingDef("House", 100, 6, 4, "/Assets/Buildings/BuildingBeige.png", 180, 11, 6, "/Assets/Buildings/BuildingBeige_LVL2.png"),
-            ["Shop"] = new BuildingDef("Shop", 220, 12, 2, "/Assets/Buildings/BuildingBlue.png", 320, 19, 4, "/Assets/Buildings/BuildingBlue_LVL2.png"),
-            ["Factory"] = new BuildingDef("Factory", 300, 18, 1, "/Assets/Buildings/BuildingWhite.png", 430, 28, 2, "/Assets/Buildings/BuildingWhite_LVL2.png")
+            ["House"] = new BuildingDef(
+                "House", 120, 3, 4, "/Assets/Buildings/BuildingBeige.png",
+                360, 5, 6, "/Assets/Buildings/BuildingBeige_LVL2.png",
+                900, 8, 8, "/Assets/Buildings/BuildingBeige_LVL3.png"),
+            ["Shop"] = new BuildingDef(
+                "Shop", 260, 5, 2, "/Assets/Buildings/BuildingBlue.png",
+                520, 8, 3, "/Assets/Buildings/BuildingBlue_LVL2.png",
+                1100, 12, 4, "/Assets/Buildings/BuildingBlue_LVL3.png"),
+            ["Factory"] = new BuildingDef(
+                "Factory", 380, 7, 1, "/Assets/Buildings/BuildingWhite.png",
+                760, 11, 2, "/Assets/Buildings/BuildingWhite_LVL2.png",
+                1500, 16, 3, "/Assets/Buildings/BuildingWhite_LVL3.png")
         };
 
         private string? _selectedBuilding;
@@ -51,6 +65,10 @@ namespace TycoonGame.Scenes
             for (int i = 0; i < _lotControls.Count; i++)
                 _lots.Add(new LotState());
 
+            _ticksUntilNextEvent = 12;
+
+            _eventPopupTimer.Tick += (_, _) => HideEventPopup();
+
             _gameTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
             _gameTimer.Tick += (_, _) => TickGame();
             _gameTimer.Start();
@@ -63,17 +81,140 @@ namespace TycoonGame.Scenes
 
         private void TickGame()
         {
-            _money += _lots.Sum(x => x.IncomePerSec);
+            if (_eventTicksRemaining > 0)
+            {
+                _eventTicksRemaining--;
+                if (_eventTicksRemaining == 0)
+                {
+                    _incomeMultiplier = 1m;
+                    StatusText.Text = "Event ended. Income back to normal.";
+                }
+            }
+
+            var baseIncome = _lots.Sum(x => x.IncomePerSec);
+            var tickIncome = decimal.Round(baseIncome * _incomeMultiplier, 2);
+            _money += tickIncome;
+
+            _ticksUntilNextEvent--;
+            if (_ticksUntilNextEvent <= 0)
+                TriggerRandomEvent();
+
             RefreshHud();
         }
 
         private void RefreshHud()
         {
             MoneyText.Text = $"${_money:0}";
-            IncomeText.Text = $"Income/s: ${_lots.Sum(x => x.IncomePerSec):0}";
+            var displayIncome = decimal.Round(_lots.Sum(x => x.IncomePerSec) * _incomeMultiplier, 2);
+            IncomeText.Text = _incomeMultiplier == 1m
+                ? $"Income/s: ${displayIncome:0.##}"
+                : $"Income/s: ${displayIncome:0.##} (x{_incomeMultiplier:0.##})";
             PopulationText.Text = $"Pop: {_population}";
+            UpdateUpgradePanelIfOpen();
         }
 
+        private void ShowEventPopup(string message, bool positive = false)
+        {
+            EventPopupText.Text = message;
+            EventPopup.Background = positive
+                ? new SolidColorBrush(Color.FromRgb(220, 252, 231))
+                : new SolidColorBrush(Color.FromRgb(254, 226, 226));
+            EventPopup.BorderBrush = positive
+                ? new SolidColorBrush(Color.FromRgb(21, 128, 61))
+                : new SolidColorBrush(Color.FromRgb(127, 29, 29));
+            EventPopupText.Foreground = positive
+                ? new SolidColorBrush(Color.FromRgb(21, 128, 61))
+                : new SolidColorBrush(Color.FromRgb(127, 29, 29));
+
+            EventPopup.BeginAnimation(UIElement.OpacityProperty, null);
+            EventPopupScale.BeginAnimation(ScaleTransform.ScaleXProperty, null);
+            EventPopupScale.BeginAnimation(ScaleTransform.ScaleYProperty, null);
+            EventPopupTranslate.BeginAnimation(TranslateTransform.YProperty, null);
+
+            EventPopup.Visibility = Visibility.Visible;
+            EventPopup.Opacity = 0;
+            EventPopupScale.ScaleX = 0.85;
+            EventPopupScale.ScaleY = 0.85;
+            EventPopupTranslate.Y = -220;
+
+            EventPopup.BeginAnimation(UIElement.OpacityProperty, new DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(220)));
+
+            var dropIn = new DoubleAnimationUsingKeyFrames();
+            dropIn.KeyFrames.Add(new EasingDoubleKeyFrame(-220, KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(0))));
+            dropIn.KeyFrames.Add(new EasingDoubleKeyFrame(18, KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(230)))
+            {
+                EasingFunction = new CubicEase { EasingMode = EasingMode.EaseOut }
+            });
+            dropIn.KeyFrames.Add(new EasingDoubleKeyFrame(0, KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(340)))
+            {
+                EasingFunction = new BackEase { Amplitude = 0.5, EasingMode = EasingMode.EaseOut }
+            });
+            EventPopupTranslate.BeginAnimation(TranslateTransform.YProperty, dropIn);
+
+            var pulseX = new DoubleAnimationUsingKeyFrames();
+            pulseX.KeyFrames.Add(new EasingDoubleKeyFrame(0.85, KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(0))));
+            pulseX.KeyFrames.Add(new EasingDoubleKeyFrame(1.06, KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(240))));
+            pulseX.KeyFrames.Add(new EasingDoubleKeyFrame(1.0, KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(360))));
+            EventPopupScale.BeginAnimation(ScaleTransform.ScaleXProperty, pulseX);
+
+            var pulseY = new DoubleAnimationUsingKeyFrames();
+            pulseY.KeyFrames.Add(new EasingDoubleKeyFrame(0.85, KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(0))));
+            pulseY.KeyFrames.Add(new EasingDoubleKeyFrame(1.06, KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(240))));
+            pulseY.KeyFrames.Add(new EasingDoubleKeyFrame(1.0, KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(360))));
+            EventPopupScale.BeginAnimation(ScaleTransform.ScaleYProperty, pulseY);
+
+            _eventPopupTimer.Stop();
+            _eventPopupTimer.Start();
+        }
+
+        private void HideEventPopup()
+        {
+            _eventPopupTimer.Stop();
+
+            var fadeOut = new DoubleAnimation(0, TimeSpan.FromMilliseconds(220));
+            fadeOut.Completed += (_, _) =>
+            {
+                EventPopup.Visibility = Visibility.Collapsed;
+            };
+            EventPopup.BeginAnimation(UIElement.OpacityProperty, fadeOut);
+        }
+
+        private int RollNextEventTicks()
+        {
+            return _rng.Next(20, 41);
+        }
+
+        private void TriggerRandomEvent()
+        {
+            _ticksUntilNextEvent = RollNextEventTicks();
+
+            var roll = _rng.Next(0, 3);
+            switch (roll)
+            {
+                case 0:
+                    _incomeMultiplier = 0.70m;
+                    _eventTicksRemaining = 25;
+                    StatusText.Text = "? Power outage: income -30% for 25s.";
+                    ShowEventPopup("? POWER OUTAGE! Income -30% for 25 seconds.");
+                    break;
+
+                case 1:
+                    _incomeMultiplier = 1.35m;
+                    _eventTicksRemaining = 15;
+                    StatusText.Text = "?? Tourist boom: income +35% for 15s.";
+                    ShowEventPopup("?? TOURIST BOOM! Income +35% for 15 seconds.", positive: true);
+                    break;
+
+                default:
+                    var fee = Math.Max(25m, decimal.Round(_money * 0.12m, 0));
+                    _money = Math.Max(0m, _money - fee);
+                    _incomeMultiplier = 1m;
+                    _eventTicksRemaining = 0;
+                    StatusText.Text = $"?? Maintenance fee: -${fee:0}.";
+                    ShowEventPopup($"?? MAINTENANCE FEE! You paid ${fee:0}.");
+                    break;
+            }
+        }
         private void SelectBuilding_Click(object sender, RoutedEventArgs e)
         {
             if (sender is Button btn && btn.Tag is string key && _defs.ContainsKey(key))
@@ -245,18 +386,20 @@ namespace TycoonGame.Scenes
                 return;
             }
 
-            if (lot.Level >= 2)
+            if (lot.Level >= 3)
             {
                 UpgradePreviewImage.Source = LoadSprite(lot.Sprite);
-                UpgradeStatsText.Text = $"{lot.BuildingName} este deja la nivel maxim (LVL2).\nIncome: +${lot.IncomePerSec}/s\nPop: +{lot.PopulationGain}";
+                UpgradeStatsText.Text = $"{lot.BuildingName} este deja la nivel maxim (LVL3).\nIncome: +${lot.IncomePerSec}/s\nPop: +{lot.PopulationGain}";
                 UpgradeButton.IsEnabled = false;
                 UpgradeButton.Content = "MAX";
             }
             else
             {
-                UpgradePreviewImage.Source = LoadSprite(def.SpriteLvl2);
-                UpgradeStatsText.Text = $"Upgrade cost: ${def.UpgradeCost}\nAfter upgrade (LVL2):\nIncome: +${def.IncomePerSecLvl2}/s\nPop: +{def.PopulationGainLvl2}";
-                UpgradeButton.IsEnabled = _money >= def.UpgradeCost;
+                var nextLevel = lot.Level + 1;
+                var nextSprite = nextLevel == 2 ? def.SpriteLvl2 : def.SpriteLvl3;
+                UpgradePreviewImage.Source = LoadSprite(nextSprite);
+                UpgradeStatsText.Text = BuildUpgradeStatsText(lot, def);
+                UpgradeButton.IsEnabled = _money >= GetUpgradeCostForNextLevel(lot, def);
                 UpgradeButton.Content = "Upgrade";
             }
 
@@ -264,6 +407,67 @@ namespace TycoonGame.Scenes
             PlayUpgradePanelShowAnimation();
         }
 
+        private void UpdateUpgradePanelIfOpen()
+        {
+            if (_upgradeLotIndex < 0 || UpgradePanel.Visibility != Visibility.Visible)
+                return;
+
+            var lot = _lots[_upgradeLotIndex];
+            if (!_defs.TryGetValue(lot.BuildingKey, out var def))
+                return;
+
+            if (lot.Level >= 3)
+            {
+                UpgradeButton.IsEnabled = false;
+                UpgradeButton.Content = "MAX";
+                return;
+            }
+
+            UpgradeStatsText.Text = BuildUpgradeStatsText(lot, def);
+            UpgradeButton.IsEnabled = _money >= GetUpgradeCostForNextLevel(lot, def);
+            UpgradeButton.Content = "Upgrade";
+        }
+
+        private string BuildUpgradeStatsText(LotState lot, BuildingDef def)
+        {
+            var nextLevel = lot.Level + 1;
+            var nextCost = GetUpgradeCostForNextLevel(lot, def);
+            var nextIncome = nextLevel == 2 ? def.IncomePerSecLvl2 : def.IncomePerSecLvl3;
+            var nextPop = nextLevel == 2 ? def.PopulationGainLvl2 : def.PopulationGainLvl3;
+            var etaText = GetUpgradeEtaText(nextCost);
+            return $"Upgrade cost: ${nextCost}\nAfter upgrade (LVL{nextLevel}):\nIncome: +${nextIncome}/s\nPop: +{nextPop}\nTime to afford: {etaText}";
+        }
+
+        private decimal GetUpgradeCostForNextLevel(LotState lot, BuildingDef def)
+        {
+            return lot.Level switch
+            {
+                1 => def.UpgradeCost,
+                2 => def.UpgradeCostLvl3,
+                _ => 0
+            };
+        }
+
+        private string GetUpgradeEtaText(decimal targetCost)
+        {
+            if (_money >= targetCost)
+                return "now";
+
+            var incomePerSec = _lots.Sum(x => x.IncomePerSec);
+            if (incomePerSec <= 0)
+                return "never (no income)";
+
+            var missing = targetCost - _money;
+            var totalSeconds = (int)Math.Ceiling((double)(missing / incomePerSec));
+            var ts = TimeSpan.FromSeconds(totalSeconds);
+
+            if (ts.TotalHours >= 1)
+                return $"{(int)ts.TotalHours}h {ts.Minutes}m {ts.Seconds}s";
+            if (ts.TotalMinutes >= 1)
+                return $"{ts.Minutes}m {ts.Seconds}s";
+
+            return $"{ts.Seconds}s";
+        }
         private void HideUpgradePanel()
         {
             _upgradeLotIndex = -1;
@@ -307,30 +511,42 @@ namespace TycoonGame.Scenes
             var lot = _lots[_upgradeLotIndex];
             if (!_defs.TryGetValue(lot.BuildingKey, out var def)) return;
 
-            if (lot.Level >= 2)
+            if (lot.Level >= 3)
             {
                 StatusText.Text = "Clădirea este deja la nivel maxim.";
                 return;
             }
 
-            if (_money < def.UpgradeCost)
+            var upgradeCost = GetUpgradeCostForNextLevel(lot, def);
+            if (_money < upgradeCost)
             {
                 StatusText.Text = "Fonduri insuficiente pentru upgrade.";
                 return;
             }
 
-            _money -= def.UpgradeCost;
+            _money -= upgradeCost;
             _population -= lot.PopulationGain;
 
-            lot.Level = 2;
-            lot.IncomePerSec = def.IncomePerSecLvl2;
-            lot.PopulationGain = def.PopulationGainLvl2;
-            lot.Sprite = def.SpriteLvl2;
+            if (lot.Level == 1)
+            {
+                lot.Level = 2;
+                lot.IncomePerSec = def.IncomePerSecLvl2;
+                lot.PopulationGain = def.PopulationGainLvl2;
+                lot.Sprite = def.SpriteLvl2;
+            }
+            else
+            {
+                lot.Level = 3;
+                lot.IncomePerSec = def.IncomePerSecLvl3;
+                lot.PopulationGain = def.PopulationGainLvl3;
+                lot.Sprite = def.SpriteLvl3;
+            }
+
             _population += lot.PopulationGain;
 
             RenderLot(_upgradeLotIndex);
             RefreshHud();
-            StatusText.Text = $"{lot.BuildingName} upgraded la LVL2.";
+            StatusText.Text = $"{lot.BuildingName} upgraded la LVL{lot.Level}.";
             HideUpgradePanel();
         }
 
@@ -418,8 +634,9 @@ namespace TycoonGame.Scenes
             panel.Children.Add(new Image
             {
                 Source = LoadSprite(lotState.Sprite),
-                Width = 122,
-                Height = 96,
+                Width = 132,
+                Height = 98,
+                Stretch = Stretch.Uniform,
                 HorizontalAlignment = HorizontalAlignment.Center
             });
             panel.Children.Add(new TextBlock
@@ -470,14 +687,24 @@ namespace TycoonGame.Scenes
             for (int i = 0; i < data.Lots.Count && i < _lots.Count; i++)
             {
                 var savedLot = data.Lots[i];
+                var key = string.IsNullOrWhiteSpace(savedLot.BuildingKey) ? savedLot.BuildingName : savedLot.BuildingKey;
+                var lvl = savedLot.Level <= 0 ? 1 : savedLot.Level;
+                _defs.TryGetValue(key, out var loadedDef);
+                var fallbackSprite = lvl switch
+                {
+                    3 => loadedDef?.SpriteLvl3 ?? loadedDef?.SpriteLvl2 ?? loadedDef?.Sprite ?? string.Empty,
+                    2 => loadedDef?.SpriteLvl2 ?? loadedDef?.Sprite ?? string.Empty,
+                    _ => loadedDef?.Sprite ?? string.Empty
+                };
+
                 _lots[i] = new LotState
                 {
-                    BuildingKey = string.IsNullOrWhiteSpace(savedLot.BuildingKey) ? savedLot.BuildingName : savedLot.BuildingKey,
+                    BuildingKey = key,
                     BuildingName = savedLot.BuildingName,
-                    Level = savedLot.Level <= 0 ? 1 : savedLot.Level,
+                    Level = lvl,
                     IncomePerSec = savedLot.IncomePerSec,
                     PopulationGain = savedLot.PopulationGain,
-                    Sprite = savedLot.Sprite
+                    Sprite = string.IsNullOrWhiteSpace(savedLot.Sprite) ? fallbackSprite : savedLot.Sprite
                 };
             }
 
@@ -516,8 +743,11 @@ namespace TycoonGame.Scenes
 
         private void Reset_Click(object sender, RoutedEventArgs e)
         {
-            _money = 250;
+            _money = 300;
             _population = 0;
+            _incomeMultiplier = 1m;
+            _eventTicksRemaining = 0;
+            _ticksUntilNextEvent = 12;
             for (int i = 0; i < _lots.Count; i++)
             {
                 _lots[i] = new LotState();
@@ -526,12 +756,14 @@ namespace TycoonGame.Scenes
             }
             RefreshHud();
             HideUpgradePanel();
+            HideEventPopup();
             StatusText.Text = "Run resetat.";
         }
 
         private void Back_Click(object sender, RoutedEventArgs e)
         {
             _gameTimer.Stop();
+            _eventPopupTimer.Stop();
             _parentWindow.GoBack();
         }
 
@@ -546,9 +778,14 @@ namespace TycoonGame.Scenes
             public decimal IncomePerSecLvl2 { get; }
             public int PopulationGainLvl2 { get; }
             public string SpriteLvl2 { get; }
+            public decimal UpgradeCostLvl3 { get; }
+            public decimal IncomePerSecLvl3 { get; }
+            public int PopulationGainLvl3 { get; }
+            public string SpriteLvl3 { get; }
 
             public BuildingDef(string name, decimal cost, decimal incomePerSec, int populationGain, string sprite,
-                decimal upgradeCost, decimal incomePerSecLvl2, int populationGainLvl2, string spriteLvl2)
+                decimal upgradeCost, decimal incomePerSecLvl2, int populationGainLvl2, string spriteLvl2,
+                decimal upgradeCostLvl3, decimal incomePerSecLvl3, int populationGainLvl3, string spriteLvl3)
             {
                 Name = name;
                 Cost = cost;
@@ -559,6 +796,10 @@ namespace TycoonGame.Scenes
                 IncomePerSecLvl2 = incomePerSecLvl2;
                 PopulationGainLvl2 = populationGainLvl2;
                 SpriteLvl2 = spriteLvl2;
+                UpgradeCostLvl3 = upgradeCostLvl3;
+                IncomePerSecLvl3 = incomePerSecLvl3;
+                PopulationGainLvl3 = populationGainLvl3;
+                SpriteLvl3 = spriteLvl3;
             }
         }
 
@@ -575,3 +816,12 @@ namespace TycoonGame.Scenes
         }
     }
 }
+
+
+
+
+
+
+
+
+
