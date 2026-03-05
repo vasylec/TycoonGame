@@ -46,6 +46,8 @@
     <None Remove="Assets\SaveIcon.png" />
     <None Remove="Assets\Sounds\music.mp3" />
     <None Remove="Assets\Sounds\sfx.wav" />
+    <None Remove="Assets\Textures\Water.jpg" />
+    <None Remove="Assets\Textures\Water.png" />
     <None Remove="Assets\UI\WoodPanel.png" />
   </ItemGroup>
 
@@ -138,6 +140,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\MainMenuBackground.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Textures\Water.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Textures\Water.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\UI\WoodPanel.png">

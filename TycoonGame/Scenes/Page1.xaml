@@ -143,16 +143,24 @@
             </Border>
 
             <!-- Island map -->
-            <Border Grid.Column="1" Margin="10" Padding="10" Background="#CC0F172A" CornerRadius="10" BorderBrush="#334155" BorderThickness="1">
+            <Border Grid.Column="1" Margin="10" Padding="10" Background="#CC0F172A" CornerRadius="10" BorderBrush="#334155" BorderThickness="1" MouseDown="Border_MouseDown_1">
                 <Grid>
-                    <Canvas x:Name="IslandCanvas" Background="#1E293B">
-                        <!-- Ocean decoration -->
+
+
+                        <Canvas x:Name="IslandCanvas" Background="#1E293B">
+                            <!-- Ocean decoration -->
                         <Ellipse Canvas.Left="30" Canvas.Top="20" Width="980" Height="620" Fill="#1D4ED8" Opacity="0.25"/>
+
+                            <Canvas x:Name="WaterCanvas" IsHitTestVisible="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
 
                         <!-- Island -->
                         <Ellipse Canvas.Left="130" Canvas.Top="80" Width="780" Height="500" Fill="#3F6212" Stroke="#84CC16" StrokeThickness="5"/>
 
-                        <!-- Predefined lots -->
+                            <Border x:Name="Lot_click" Tag="0" Canvas.Left="0" Canvas.Top="0" Width="100" Height="50" Background="#FDE68A" BorderBrush="#92400E" BorderThickness="2" CornerRadius="8" MouseDown="Lot_click_MouseDown" MouseEnter="Lot_click_MouseEnter" MouseLeave="Lot_click_MouseLeave">
+                                <TextBlock Text="Click for 1$" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold"/>
+                            </Border>
+
+                            <!-- Predefined lots -->
                         <Border x:Name="Lot1" Tag="0" Canvas.Left="235" Canvas.Top="160" Width="165" Height="135" Background="#FDE68A" BorderBrush="#92400E" BorderThickness="2" CornerRadius="8"
                                 PreviewMouseLeftButtonDown="Lot_Click">
                             <TextBlock Text="Lot 1" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold"/>
@@ -195,7 +203,7 @@
                                 <TextBlock x:Name="UpgradeStatsText" Foreground="#E2E8F0" TextWrapping="Wrap" FontSize="12"/>
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
                                     <Button Content="Close" Width="60" Margin="0,0,8,0" Click="UpgradeClose_Click"/>
-                                    <Button x:Name="DemolishButton" Content="Delete" Width="70" Margin="0,0,8,0" Click="DemolishConfirm_Click"/>
+                                    <Button x:Name="DemolishButton" Content="Sell" Width="70" Margin="0,0,8,0" Click="DemolishConfirm_Click"/>
                                     <Button x:Name="UpgradeButton" Content="Upgrade" Width="80" Click="UpgradeConfirm_Click"/>
                                 </StackPanel>
                             </StackPanel>

@@ -1,14 +1,17 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Threading;
-using System.Windows.Media.Imaging;
 using System.Windows.Media.Animation;
-using System.IO;
+using System.Windows.Media.Imaging;
+using System.Windows.Threading;
+using TycoonGame.Animations;
+using TycoonGame.Helpers;
 using TycoonGame.Scripts;
 
 namespace TycoonGame.Scenes
@@ -54,6 +57,16 @@ namespace TycoonGame.Scenes
         private double _currentDragAngle;
         private int _upgradeLotIndex = -1;
 
+        private WaterTiles_Animate waterTilesGrid;
+        private DrawingVisual waterVisual = new DrawingVisual();
+        private int tileSize = 80;
+        private BitmapSource[] waterFrames;
+        private Stopwatch stopwatch = new Stopwatch();
+        private double totalTime = 0;
+        private double animationSpeed = 4; // frames per second
+        private int gridWidth;
+        private int gridHeight;
+
         public Page1(MainMenu parent)
         {
             InitializeComponent();
@@ -77,6 +90,12 @@ namespace TycoonGame.Scenes
 
             UIHelper.ApplyPixelFontAndSettings(this);
             RefreshHud();
+
+            Loaded += Game_Loaded; // wait until window is shown
+            WaterCanvas.Children.Clear(); // remove old stuff+
+            var host = new VisualHost();
+            host.AddVisual(waterVisual);
+            WaterCanvas.Children.Add(host);
         }
 
         private void TickGame()
@@ -363,17 +382,21 @@ namespace TycoonGame.Scenes
 
             HideUpgradePanel();
 
-            if (_selectedBuilding is null)
-            {
-                StatusText.Text = "Selectează întâi o clădire din stânga.";
-                return;
-            }
+            //if (_selectedBuilding is null)
+            //{
+            //    StatusText.Text = "Selectează întâi o clădire din stânga.";
+            //    return;
+            //}
 
-            PlaceBuilding(idx, _selectedBuilding);
+            //PlaceBuilding(idx, _selectedBuilding);
         }
 
         private void ShowUpgradePanel(int lotIndex, Border lotControl)
         {
+            if (lotIndex == _upgradeLotIndex)
+                return;
+            
+            
             var lot = _lots[lotIndex];
             _upgradeLotIndex = lotIndex;
 
@@ -556,14 +579,50 @@ namespace TycoonGame.Scenes
             var lot = _lots[_upgradeLotIndex];
             if (lot.IsEmpty) return;
 
+
+            decimal refund = 0;
+
+            if (_defs.TryGetValue(lot.BuildingKey, out var def))
+            {
+                decimal totalInvested = def.Cost;
+
+                if (lot.Level >= 2)
+                    totalInvested += def.UpgradeCost;
+
+                if (lot.Level >= 3)
+                    totalInvested += def.UpgradeCostLvl3;
+
+                refund = decimal.Round(totalInvested * 0.70m, 0); // 70%
+
+                //_money += refund;
+
+                StatusText.Text = $"Clădire ștearsă de pe lotul {_upgradeLotIndex + 1}. Refund: ${refund:0}.";
+            }
+            else
+            {
+                StatusText.Text = $"Clădire ștearsă de pe lotul {_upgradeLotIndex + 1}.";
+            }
+
+
+
             var result = MessageBox.Show(
-                $"Delete {lot.BuildingName} from lot {_upgradeLotIndex + 1}?",
-                "Confirm delete",
+                $"Sell {lot.BuildingName} from lot {_upgradeLotIndex + 1} for ${refund:0}$ ?",
+                "Confirm sell",
                 MessageBoxButton.YesNo,
                 MessageBoxImage.Question);
 
-            if (result != MessageBoxResult.Yes)
+            if (result == MessageBoxResult.No)
+            {
                 return;
+            }
+
+            _money += refund;
+
+
+
+            
+
+
 
             _population -= lot.PopulationGain;
             if (_population < 0) _population = 0;
@@ -571,7 +630,11 @@ namespace TycoonGame.Scenes
             _lots[_upgradeLotIndex] = new LotState();
             RenderLot(_upgradeLotIndex);
             RefreshHud();
-            StatusText.Text = $"Clădire ștearsă de pe lotul {_upgradeLotIndex + 1}.";
+            StatusText.Text = $"Clădire vândută de pe lotul {_upgradeLotIndex + 1}.";
+
+            
+
+
             HideUpgradePanel();
         }
 
@@ -813,6 +876,121 @@ namespace TycoonGame.Scenes
             public string Sprite { get; set; } = string.Empty;
 
             public bool IsEmpty => string.IsNullOrWhiteSpace(BuildingName);
+        }
+
+        
+
+        private void Lot_click_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton != MouseButton.Left)
+                return;
+
+            _money += 1;
+            RefreshHud();
+        }
+
+        private void Lot_click_MouseEnter(object sender, MouseEventArgs e)
+        {
+            if (sender is Border border)
+            {
+                border.Cursor = App.HoverCursor; 
+            }
+        }
+
+        private void Lot_click_MouseLeave(object sender, MouseEventArgs e)
+        {
+            if (sender is Border border)
+            {
+                border.Cursor = App.NormalCursor; // sau App.NormalCursor
+            }
+        }
+
+        private void Border_MouseDown_1(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton != MouseButton.Left)
+                return;
+
+            var hit = e.OriginalSource as DependencyObject;
+            if (FindParentLot(hit) != null)
+                return; // click pe lot → nu ascundem upgrade panel
+
+            HideUpgradePanel();
+        }
+        private void Game_Loaded(object sender, RoutedEventArgs e)
+        {
+            CompositionTarget.Rendering += GameLoop;
+            stopwatch.Start();
+            LoadWaterFrames();              // load sprite sheet ONCE
+            InitializeWaterTiles(16, 9);   // fill screen
+        }
+
+        // 🔹 Slice sprite sheet into animation frames
+        private void LoadWaterFrames()
+        {
+
+            
+
+            BitmapImage spriteSheet = new BitmapImage(
+                new Uri("pack://application:,,,/Assets/Textures/Water.png"));
+
+            int frameCount = spriteSheet.PixelWidth / tileSize;
+            waterFrames = new BitmapSource[frameCount];
+
+            for (int f = 0; f < frameCount; f++)
+            {
+                waterFrames[f] = new CroppedBitmap(
+                    spriteSheet,
+                    new Int32Rect(f * tileSize, 0, tileSize, tileSize));
+            }
+        }
+
+        // 🔹 Create grid of water tiles
+        private void InitializeWaterTiles(int width, int height)
+        {
+            gridWidth = width;
+            gridHeight = height;
+
+            waterTilesGrid = new WaterTiles_Animate(width, height);
+
+            for (int x = 0; x < width; x++)
+            {
+                for (int y = 0; y < height; y++)
+                {
+                    var tile = new WaterTiles(waterFrames);
+
+                    // Offset animation phase per tile
+                    tile.CurrentFrame = (x + y) % waterFrames.Length;
+
+                    waterTilesGrid.Tiles[x, y] = tile;
+                }
+            }
+
+            WaterCanvas.IsHitTestVisible = false; // still good
+        }
+
+        // 🔹 Animation loop
+        private void GameLoop(object sender, EventArgs e)
+        {
+            double deltaTime = stopwatch.Elapsed.TotalSeconds;
+            stopwatch.Restart();
+            totalTime += deltaTime;
+
+            int baseFrame = (int)(totalTime * animationSpeed);
+
+            using (DrawingContext dc = waterVisual.RenderOpen())
+            {
+                for (int x = 0; x < 16; x++)
+                {
+                    for (int y = 0; y < 9; y++)
+                    {
+                        int frameIndex = (baseFrame + x + y) % waterFrames.Length;
+
+                        dc.DrawImage(
+                            waterFrames[frameIndex],
+                            new Rect(x * tileSize, y * tileSize, tileSize, tileSize));
+                    }
+                }
+            }
         }
     }
 }
