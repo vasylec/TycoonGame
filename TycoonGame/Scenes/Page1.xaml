@@ -4,12 +4,11 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       mc:Ignorable="d"
-      Title="GamePage">
+      Title="GamePage"
+      Background="#0B1020">
 
-    <Grid x:Name="RootGrid" Background="#0B1020" MouseMove="RootGrid_MouseMove" PreviewMouseLeftButtonUp="RootGrid_MouseLeftButtonUp">
-        <Grid.LayoutTransform>
-            <ScaleTransform ScaleX="1.15" ScaleY="1.15"/>
-        </Grid.LayoutTransform>
+    <Viewbox Stretch="Uniform" StretchDirection="Both">
+    <Grid x:Name="RootGrid" Width="1600" Height="900" Background="#0B1020" MouseMove="RootGrid_MouseMove" PreviewMouseLeftButtonUp="RootGrid_MouseLeftButtonUp">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -91,9 +90,9 @@
                     RenderOptions.BitmapScalingMode="NearestNeighbor">
                 <Border.Background>
                     <ImageBrush ImageSource="/Assets/UI/WoodPanel.png"
-                                Stretch="Fill"
+                                Stretch="None"
                                 AlignmentX="Center"
-                                AlignmentY="Center"
+                                AlignmentY="Top"
                                 RenderOptions.BitmapScalingMode="NearestNeighbor"/>
                 </Border.Background>
                 <StackPanel>
@@ -254,6 +253,7 @@
             </Image>
         </Canvas>
     </Grid>
+    </Viewbox>
 </Page>
 
 
