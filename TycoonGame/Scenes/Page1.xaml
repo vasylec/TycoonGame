@@ -8,217 +8,264 @@
       Background="#0B1020">
 
     <Viewbox Stretch="Uniform" StretchDirection="Both">
-    <Grid x:Name="RootGrid" Width="1600" Height="900" Background="#0B1020" MouseMove="RootGrid_MouseMove" PreviewMouseLeftButtonUp="RootGrid_MouseLeftButtonUp">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
+        <Grid x:Name="RootGrid" Width="1600" Height="900" Background="#0B1020" MouseMove="RootGrid_MouseMove" PreviewMouseLeftButtonUp="RootGrid_MouseLeftButtonUp">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
 
-        <!-- HUD -->
-        <Border Grid.Row="0" Background="#DD111827" Padding="12">
-            <DockPanel LastChildFill="False">
-                <StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
-                    <TextBlock Text="ISLAND TYCOON" FontSize="26" FontWeight="Bold" Foreground="#FACC15" Margin="0,0,18,0"/>
-                    <TextBlock x:Name="SaveNameText" Text="Save: -" FontSize="16" Foreground="White" Margin="0,0,14,0"/>
-                    <TextBlock x:Name="MoneyText" Text="$0" FontSize="18" FontWeight="Bold" Foreground="#86EFAC" Margin="0,0,14,0"/>
-                    <TextBlock x:Name="IncomeText" Text="Income/s: $0" FontSize="16" Foreground="#93C5FD" Margin="0,0,14,0"/>
-                    <TextBlock x:Name="PopulationText" Text="Pop: 0" FontSize="16" Foreground="#FDBA74"/>
-                </StackPanel>
+            <!-- HUD -->
+            <Border Grid.Row="0" Background="#DD111827" Padding="12">
+                <DockPanel LastChildFill="False">
+                    <StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
+                        <TextBlock Text="ISLAND TYCOON" FontSize="26" FontWeight="Bold" Foreground="#FACC15" Margin="0,0,18,0"/>
+                        <TextBlock x:Name="SaveNameText" Text="Save: -" FontSize="16" Foreground="White" Margin="0,0,14,0"/>
+                        <TextBlock x:Name="MoneyText" Text="$0" FontSize="18" FontWeight="Bold" Foreground="#86EFAC" Margin="0,0,14,0"/>
+                        <TextBlock x:Name="IncomeText" Text="Income/s: $0" FontSize="16" Foreground="#93C5FD" Margin="0,0,14,0"/>
+                        <TextBlock x:Name="PopulationText" Text="Pop: 0" FontSize="16" Foreground="#FDBA74"/>
+                    </StackPanel>
 
-                <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
-                    <Button Width="120" Height="46" Margin="0,0,8,0" Click="Settings_Click" Background="Transparent" BorderThickness="0">
-                        <Button.Template>
-                            <ControlTemplate TargetType="Button">
-                                <Image x:Name="BtnImage" Source="/Assets/Buttons/ButtonSettings.png" Stretch="Fill"/>
-                                <ControlTemplate.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="BtnImage" Property="Source" Value="/Assets/Buttons/ButtonSettings_Hover.png"/></Trigger>
-                                    <Trigger Property="IsPressed" Value="True"><Setter TargetName="BtnImage" Property="Source" Value="/Assets/Buttons/ButtonSettings_Click.png"/></Trigger>
-                                </ControlTemplate.Triggers>
-                            </ControlTemplate>
-                        </Button.Template>
-                    </Button>
+                    <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
+                        <Button Width="120" Height="46" Margin="0,0,8,0" Click="Settings_Click" Background="Transparent" BorderThickness="0">
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Image x:Name="BtnImage" Source="/Assets/Buttons/ButtonSettings.png" Stretch="Fill"/>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter TargetName="BtnImage" Property="Source" Value="/Assets/Buttons/ButtonSettings_Hover.png"/>
+                                        </Trigger>
+                                        <Trigger Property="IsPressed" Value="True">
+                                            <Setter TargetName="BtnImage" Property="Source" Value="/Assets/Buttons/ButtonSettings_Click.png"/>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
 
-                    <Button Width="120" Height="46" Margin="0,0,8,0" Click="Save_Click" Background="Transparent" BorderThickness="0">
-                        <Button.Template>
-                            <ControlTemplate TargetType="Button">
-                                <Image x:Name="BtnImage" Source="/Assets/Buttons/ButtonSave.png" Stretch="Fill"/>
-                                <ControlTemplate.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="BtnImage" Property="Source" Value="/Assets/Buttons/ButtonSave_Hover.png"/></Trigger>
-                                    <Trigger Property="IsPressed" Value="True"><Setter TargetName="BtnImage" Property="Source" Value="/Assets/Buttons/ButtonSave_Click.png"/></Trigger>
-                                </ControlTemplate.Triggers>
-                            </ControlTemplate>
-                        </Button.Template>
-                    </Button>
+                        <Button Width="120" Height="46" Margin="0,0,8,0" Click="Save_Click" Background="Transparent" BorderThickness="0">
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Image x:Name="BtnImage" Source="/Assets/Buttons/ButtonSave.png" Stretch="Fill"/>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter TargetName="BtnImage" Property="Source" Value="/Assets/Buttons/ButtonSave_Hover.png"/>
+                                        </Trigger>
+                                        <Trigger Property="IsPressed" Value="True">
+                                            <Setter TargetName="BtnImage" Property="Source" Value="/Assets/Buttons/ButtonSave_Click.png"/>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
 
-                    <Button Width="49" Height="46" Margin="0,0,8,0" Click="Back_Click" Background="Transparent" BorderThickness="0">
-                        <Button.Template>
-                            <ControlTemplate TargetType="Button">
-                                <Image x:Name="BtnImage" Source="/Assets/Buttons/ButtonBackArrow.png" Stretch="Fill"/>
-                                <ControlTemplate.Triggers>
-                                    <Trigger Property="IsPressed" Value="True"><Setter TargetName="BtnImage" Property="Source" Value="/Assets/Buttons/ButtonBackArrow_Click.png"/></Trigger>
-                                </ControlTemplate.Triggers>
-                            </ControlTemplate>
-                        </Button.Template>
-                    </Button>
+                        <Button Width="49" Height="46" Margin="0,0,8,0" Click="Back_Click" Background="Transparent" BorderThickness="0">
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Image x:Name="BtnImage" Source="/Assets/Buttons/ButtonBackArrow.png" Stretch="Fill"/>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsPressed" Value="True">
+                                            <Setter TargetName="BtnImage" Property="Source" Value="/Assets/Buttons/ButtonBackArrow_Click.png"/>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
 
-                    <Button Width="120" Height="46" Click="Reset_Click" Background="Transparent" BorderThickness="0">
-                        <Button.Template>
-                            <ControlTemplate TargetType="Button">
-                                <Image x:Name="BtnImage" Source="/Assets/Buttons/ButtonDelete.png" Stretch="Fill"/>
-                                <ControlTemplate.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="BtnImage" Property="Source" Value="/Assets/Buttons/ButtonDelete_Hover.png"/></Trigger>
-                                    <Trigger Property="IsPressed" Value="True"><Setter TargetName="BtnImage" Property="Source" Value="/Assets/Buttons/ButtonDelete_Click.png"/></Trigger>
-                                </ControlTemplate.Triggers>
-                            </ControlTemplate>
-                        </Button.Template>
-                    </Button>
-                </StackPanel>
-            </DockPanel>
-        </Border>
+                        <Button Width="120" Height="46" Click="Reset_Click" Background="Transparent" BorderThickness="0">
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Image x:Name="BtnImage" Source="/Assets/Buttons/ButtonDelete.png" Stretch="Fill"/>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter TargetName="BtnImage" Property="Source" Value="/Assets/Buttons/ButtonDelete_Hover.png"/>
+                                        </Trigger>
+                                        <Trigger Property="IsPressed" Value="True">
+                                            <Setter TargetName="BtnImage" Property="Source" Value="/Assets/Buttons/ButtonDelete_Click.png"/>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
+                    </StackPanel>
+                </DockPanel>
+            </Border>
 
-        <Grid Grid.Row="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="300"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="300"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
 
-            <!-- Build palette -->
-            <Border Grid.Column="0" Margin="10" Padding="10" CornerRadius="10" BorderBrush="#334155" BorderThickness="1"
+                <!-- Build palette -->
+                <Border Grid.Column="0" Margin="10" Padding="10" CornerRadius="10" BorderBrush="#334155" BorderThickness="1"
                     SnapsToDevicePixels="True"
                     UseLayoutRounding="True"
                     RenderOptions.BitmapScalingMode="NearestNeighbor">
-                <Border.Background>
-                    <ImageBrush ImageSource="/Assets/UI/WoodPanel.png"
+                    <Border.Background>
+                        <ImageBrush ImageSource="/Assets/UI/WoodPanel.png"
                                 Stretch="None"
                                 AlignmentX="Center"
                                 AlignmentY="Top"
                                 RenderOptions.BitmapScalingMode="NearestNeighbor"/>
-                </Border.Background>
-                <StackPanel>
-                    <TextBlock Text="Build Menu" FontSize="22" FontWeight="Bold" Foreground="#E5E7EB" Margin="0,0,0,10"/>
-                    <TextBlock Text="1) Selectezi clădire și dai click pe lot" Foreground="#CBD5E1" TextWrapping="Wrap"/>
-                    <TextBlock Text="2) Sau drag &amp; drop clădire pe lot" Foreground="#CBD5E1" TextWrapping="Wrap" Margin="0,0,0,12"/>
+                    </Border.Background>
+                    <StackPanel>
+                        <TextBlock Text="Build Menu" FontSize="22" FontWeight="Bold" Foreground="#E5E7EB" Margin="0,0,0,10"/>
+                        <TextBlock Text="1) Selectezi clădire și dai click pe lot" Foreground="#CBD5E1" TextWrapping="Wrap"/>
+                        <TextBlock Text="2) Sau drag &amp; drop clădire pe lot" Foreground="#CBD5E1" TextWrapping="Wrap" Margin="0,0,0,12"/>
 
-                    <Button x:Name="BtnHouse" Tag="House" Height="84" Margin="0,0,0,8"
+                        <Button x:Name="BtnHouse" Tag="House" Height="84" Margin="0,0,0,8"
                             PreviewMouseLeftButtonDown="SelectBuilding_MouseDown"
                             PreviewMouseMove="Building_PreviewMouseMove">
-                        <DockPanel>
-                            <Image Source="/Assets/Buildings/BuildingBeige.png" Width="72" Height="72" Margin="0,0,10,0"/>
-                            <StackPanel>
-                                <TextBlock Text="House" FontWeight="Bold"/>
-                                <TextBlock Text="Cost: $120 | +3/s | Pop +4" FontSize="11"/>
-                            </StackPanel>
-                        </DockPanel>
-                    </Button>
+                            <DockPanel>
+                                <Image Source="/Assets/Buildings/BuildingBeige.png" Width="72" Height="72" Margin="0,0,10,0"/>
+                                <StackPanel>
+                                    <TextBlock Text="House" FontWeight="Bold"/>
+                                    <TextBlock Text="Cost: $120 | +3/s | Pop +4" FontSize="11"/>
+                                </StackPanel>
+                            </DockPanel>
+                        </Button>
 
-                    <Button x:Name="BtnShop" Tag="Shop" Height="84" Margin="0,0,0,8"
+                        <Button x:Name="BtnShop" Tag="Shop" Height="84" Margin="0,0,0,8"
                             PreviewMouseLeftButtonDown="SelectBuilding_MouseDown"
                             PreviewMouseMove="Building_PreviewMouseMove">
-                        <DockPanel>
-                            <Image Source="/Assets/Buildings/BuildingBlue.png" Width="72" Height="72" Margin="0,0,10,0"/>
-                            <StackPanel>
-                                <TextBlock Text="Shop" FontWeight="Bold"/>
-                                <TextBlock Text="Cost: $260 | +5/s | Pop +2" FontSize="11"/>
-                            </StackPanel>
-                        </DockPanel>
-                    </Button>
+                            <DockPanel>
+                                <Image Source="/Assets/Buildings/BuildingBlue.png" Width="72" Height="72" Margin="0,0,10,0"/>
+                                <StackPanel>
+                                    <TextBlock Text="Shop" FontWeight="Bold"/>
+                                    <TextBlock Text="Cost: $260 | +5/s | Pop +2" FontSize="11"/>
+                                </StackPanel>
+                            </DockPanel>
+                        </Button>
 
-                    <Button x:Name="BtnFactory" Tag="Factory" Height="84" Margin="0,0,0,12"
+                        <Button x:Name="BtnFactory" Tag="Factory" Height="84" Margin="0,0,0,12"
                             PreviewMouseLeftButtonDown="SelectBuilding_MouseDown"
                             PreviewMouseMove="Building_PreviewMouseMove">
-                        <DockPanel>
-                            <Image Source="/Assets/Buildings/BuildingWhite.png" Width="72" Height="72" Margin="0,0,10,0"/>
-                            <StackPanel>
-                                <TextBlock Text="Factory" FontWeight="Bold"/>
-                                <TextBlock Text="Cost: $380 | +7/s | Pop +1" FontSize="11"/>
-                            </StackPanel>
-                        </DockPanel>
-                    </Button>
+                            <DockPanel>
+                                <Image Source="/Assets/Buildings/BuildingWhite.png" Width="72" Height="72" Margin="0,0,10,0"/>
+                                <StackPanel>
+                                    <TextBlock Text="Factory" FontWeight="Bold"/>
+                                    <TextBlock Text="Cost: $380 | +7/s | Pop +1" FontSize="11"/>
+                                </StackPanel>
+                            </DockPanel>
+                        </Button>
 
-                    <Border Background="#111827" CornerRadius="8" Padding="10">
-                        <TextBlock x:Name="SelectionText" Foreground="#E2E8F0" Text="Selected building: none" TextWrapping="Wrap"/>
-                    </Border>
-                </StackPanel>
-            </Border>
+                        <Border Background="#111827" CornerRadius="8" Padding="10">
+                            <TextBlock x:Name="SelectionText" Foreground="#E2E8F0" Text="Selected building: none" TextWrapping="Wrap"/>
+                        </Border>
+                    </StackPanel>
+                </Border>
 
-            <!-- Island map -->
-            <Border Grid.Column="1" Margin="10" Padding="10" Background="#CC0F172A" CornerRadius="10" BorderBrush="#334155" BorderThickness="1" MouseDown="Border_MouseDown_1">
-                <Grid>
+                <!-- Island map -->
+                <Border Grid.Column="1" Margin="10" Padding="10" Background="#CC0F172A" CornerRadius="10" BorderBrush="#334155" BorderThickness="1" MouseDown="Border_MouseDown_1">
+                    <Grid>
 
 
-                        <Canvas x:Name="IslandCanvas" Background="#1E293B">
-                            <!-- Ocean decoration -->
-                        <Ellipse Canvas.Left="30" Canvas.Top="20" Width="980" Height="620" Fill="#1D4ED8" Opacity="0.25"/>
+                        <Canvas x:Name="IslandCanvas">
 
-                            <Canvas x:Name="WaterCanvas" IsHitTestVisible="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                            <!-- Water rendered first (lowest layer) -->
+                            <Canvas x:Name="WaterCanvas" IsHitTestVisible="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Canvas.ZIndex="0"/>
 
-                        <!-- Island -->
-                        <Ellipse Canvas.Left="130" Canvas.Top="80" Width="780" Height="500" Fill="#3F6212" Stroke="#84CC16" StrokeThickness="5"/>
+                            <!-- Map image ABOVE water -->
+                            <Image x:Name="MapImage"
+                                   Canvas.ZIndex="1"
+                                   IsHitTestVisible="False"
+                                   RenderOptions.BitmapScalingMode="NearestNeighbor"
+                                   Stretch="Fill"
+                                   Width="{Binding ActualWidth, ElementName=IslandCanvas}"
+                                   Height="{Binding ActualHeight, ElementName=IslandCanvas}"/>
 
-                            <Border x:Name="Lot_click" Tag="0" Canvas.Left="0" Canvas.Top="0" Width="100" Height="50" Background="#FDE68A" BorderBrush="#92400E" BorderThickness="2" CornerRadius="8" MouseDown="Lot_click_MouseDown" MouseEnter="Lot_click_MouseEnter" MouseLeave="Lot_click_MouseLeave">
+                            <Border x:Name="Lot_click" Tag="0" Canvas.Left="0" Canvas.Top="0" Width="100" Height="50" Background="#FDE68A" BorderBrush="#92400E" BorderThickness="2" CornerRadius="8" MouseDown="Lot_click_MouseDown" MouseEnter="Lot_click_MouseEnter" MouseLeave="Lot_click_MouseLeave" Canvas.ZIndex="3000">
                                 <TextBlock Text="Click for 1$" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold"/>
                             </Border>
 
                             <!-- Predefined lots -->
-                        <Border x:Name="Lot1" Tag="0" Canvas.Left="235" Canvas.Top="160" Width="165" Height="135" Background="#FDE68A" BorderBrush="#92400E" BorderThickness="2" CornerRadius="8"
-                                PreviewMouseLeftButtonDown="Lot_Click">
-                            <TextBlock Text="Lot 1" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold"/>
-                        </Border>
+                            <Border x:Name="Lot1" Tag="0" Canvas.Left="298" Canvas.Top="346" Width="63" Height="72" Background="#FDE68A" BorderBrush="#92400E" BorderThickness="2" CornerRadius="8"
+                                PreviewMouseLeftButtonDown="Lot_Click" HorizontalAlignment="Center" VerticalAlignment="Top" Canvas.ZIndex="3000">
+                                <TextBlock Text="Lot 1" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold"/>
+                            </Border>
 
-                        <Border x:Name="Lot2" Tag="1" Canvas.Left="440" Canvas.Top="135" Width="165" Height="135" Background="#FDE68A" BorderBrush="#92400E" BorderThickness="2" CornerRadius="8"
-                                PreviewMouseLeftButtonDown="Lot_Click">
-                            <TextBlock Text="Lot 2" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold"/>
-                        </Border>
+                            <Border x:Name="Lot2" Tag="1" Canvas.Left="298" Canvas.Top="244" Width="63" Height="71" Background="#FDE68A" BorderBrush="#92400E" BorderThickness="2" CornerRadius="8"
+                                PreviewMouseLeftButtonDown="Lot_Click" Canvas.ZIndex="3000">
+                                <TextBlock Text="Lot 2" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold"/>
+                            </Border>
 
-                        <Border x:Name="Lot3" Tag="2" Canvas.Left="645" Canvas.Top="160" Width="165" Height="135" Background="#FDE68A" BorderBrush="#92400E" BorderThickness="2" CornerRadius="8"
-                                PreviewMouseLeftButtonDown="Lot_Click">
-                            <TextBlock Text="Lot 3" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold"/>
-                        </Border>
+                            <Border x:Name="Lot3" Tag="2" Canvas.Left="519" Canvas.Top="211" Width="63" Height="71" Background="#FDE68A" BorderBrush="#92400E" BorderThickness="2" CornerRadius="8"
+                                PreviewMouseLeftButtonDown="Lot_Click" Canvas.ZIndex="3000">
+                                <TextBlock Text="Lot 3" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold"/>
+                            </Border>
 
-                        <Border x:Name="Lot4" Tag="3" Canvas.Left="300" Canvas.Top="340" Width="165" Height="135" Background="#FDE68A" BorderBrush="#92400E" BorderThickness="2" CornerRadius="8"
-                                PreviewMouseLeftButtonDown="Lot_Click">
-                            <TextBlock Text="Lot 4" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold"/>
-                        </Border>
+                            <Border x:Name="Lot4" Tag="3" Canvas.Left="298" Canvas.Top="448" Width="63" Height="71" Background="#FDE68A" BorderBrush="#92400E" BorderThickness="2" CornerRadius="8"
+                                PreviewMouseLeftButtonDown="Lot_Click" Canvas.ZIndex="3000">
+                                <TextBlock Text="Lot 4" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold"/>
+                            </Border>
 
-                        <Border x:Name="Lot5" Tag="4" Canvas.Left="515" Canvas.Top="320" Width="165" Height="135" Background="#FDE68A" BorderBrush="#92400E" BorderThickness="2" CornerRadius="8"
-                                PreviewMouseLeftButtonDown="Lot_Click">
-                            <TextBlock Text="Lot 5" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold"/>
-                        </Border>
+                            <Border x:Name="Lot5" Tag="4" Canvas.Left="423" Canvas.Top="180" Width="63" Height="71" Background="#FDE68A" BorderBrush="#92400E" BorderThickness="2" CornerRadius="8"
+                                PreviewMouseLeftButtonDown="Lot_Click" Canvas.ZIndex="3000">
+                                <TextBlock Text="Lot 5" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold"/>
+                            </Border>
 
-                        <Border x:Name="Lot6" Tag="5" Canvas.Left="730" Canvas.Top="350" Width="165" Height="135" Background="#FDE68A" BorderBrush="#92400E" BorderThickness="2" CornerRadius="8"
-                                PreviewMouseLeftButtonDown="Lot_Click">
-                            <TextBlock Text="Lot 6" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold"/>
-                        </Border>
+                            <Border x:Name="Lot6" Tag="5" Canvas.Left="615" Canvas.Top="180" Width="63" Height="71" Background="#FDE68A" BorderBrush="#92400E" BorderThickness="2" CornerRadius="8"
+                                PreviewMouseLeftButtonDown="Lot_Click" Canvas.ZIndex="3000">
+                                <TextBlock Text="Lot 6" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold"/>
+                            </Border>
 
-                        <Border x:Name="UpgradePanel" Visibility="Collapsed" Canvas.Left="30" Canvas.Top="30"
+                            <Border x:Name="UpgradePanel" Visibility="Collapsed" Canvas.Left="30" Canvas.Top="30"
                                 Width="250" Height="290" Background="#EE111827" BorderBrush="#64748B" BorderThickness="2" CornerRadius="10"
-                                Opacity="0" RenderTransformOrigin="0.5,0.5">
-                            <Border.RenderTransform>
-                                <ScaleTransform x:Name="UpgradePanelScale" ScaleX="0.82" ScaleY="0.82"/>
-                            </Border.RenderTransform>
-                            <StackPanel Margin="10">
-                                <TextBlock Text="Upgrade" Foreground="White" FontSize="18" FontWeight="Bold"/>
-                                <Image x:Name="UpgradePreviewImage" Width="124" Height="92" Margin="0,8,0,6" HorizontalAlignment="Center"/>
-                                <TextBlock x:Name="UpgradeStatsText" Foreground="#E2E8F0" TextWrapping="Wrap" FontSize="12"/>
-                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
-                                    <Button Content="Close" Width="60" Margin="0,0,8,0" Click="UpgradeClose_Click"/>
-                                    <Button x:Name="DemolishButton" Content="Sell" Width="70" Margin="0,0,8,0" Click="DemolishConfirm_Click"/>
-                                    <Button x:Name="UpgradeButton" Content="Upgrade" Width="80" Click="UpgradeConfirm_Click"/>
+                                Opacity="0" RenderTransformOrigin="0.5,0.5" Canvas.ZIndex="2000">
+                                <Border.RenderTransform>
+                                    <ScaleTransform x:Name="UpgradePanelScale" ScaleX="0.82" ScaleY="0.82"/>
+                                </Border.RenderTransform>
+                                <StackPanel Margin="10">
+                                    <TextBlock Text="Upgrade" Foreground="White" FontSize="18" FontWeight="Bold"/>
+                                    <Image x:Name="UpgradePreviewImage" Width="124" Height="92" Margin="0,8,0,6" HorizontalAlignment="Center"/>
+                                    <TextBlock x:Name="UpgradeStatsText" Foreground="#E2E8F0" TextWrapping="Wrap" FontSize="12"/>
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
+                                        <Button Content="Close" Width="60" Margin="0,0,8,0" Click="UpgradeClose_Click"/>
+                                        <Button x:Name="DemolishButton" Content="Sell" Width="70" Margin="0,0,8,0" Click="DemolishConfirm_Click"/>
+                                        <Button x:Name="UpgradeButton" Content="Upgrade" Width="80" Click="UpgradeConfirm_Click"/>
+                                    </StackPanel>
                                 </StackPanel>
-                            </StackPanel>
-                        </Border>
-                    </Canvas>
-                </Grid>
+                            </Border>
+                            <Border x:Name="Lot6_Copy" Tag="6" Canvas.Left="834" Canvas.Top="115" Width="63" Height="71" Background="#FDE68A" BorderBrush="#92400E" BorderThickness="2" CornerRadius="8"
+                                PreviewMouseLeftButtonDown="Lot_Click" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.ZIndex="3000">
+                                <TextBlock Text="Lot 7" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold"/>
+                            </Border>
+                            <Border x:Name="Lot6_Copy1" Tag="7" Canvas.Left="960" Canvas.Top="144" Width="63" Height="72" Background="#FDE68A" BorderBrush="#92400E" BorderThickness="2" CornerRadius="8"
+                                PreviewMouseLeftButtonDown="Lot_Click" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.ZIndex="3000">
+                                <TextBlock Text="Lot 8" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold"/>
+                            </Border>
+                            <Border x:Name="Lot6_Copy2" Tag="8" Canvas.Left="992" Canvas.Top="246" Width="62" Height="72" Background="#FDE68A" BorderBrush="#92400E" BorderThickness="2" CornerRadius="8"
+                                PreviewMouseLeftButtonDown="Lot_Click" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.ZIndex="3000">
+                                <TextBlock Text="Lot 9" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold"/>
+                            </Border>
+                            <Border x:Name="Lot6_Copy3" Tag="9" Canvas.Left="866" Canvas.Top="310" Width="62" Height="72" Background="#FDE68A" BorderBrush="#92400E" BorderThickness="2" CornerRadius="8"
+                                PreviewMouseLeftButtonDown="Lot_Click" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.ZIndex="3000">
+                                <TextBlock Text="Lot 10" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold"/>
+                            </Border>
+                            <Border x:Name="Lot6_Copy4" Tag="10" Canvas.Left="960" Canvas.Top="346" Width="63" Height="72" Background="#FDE68A" BorderBrush="#92400E" BorderThickness="2" CornerRadius="8"
+                                PreviewMouseLeftButtonDown="Lot_Click" HorizontalAlignment="Center" VerticalAlignment="Top" Canvas.ZIndex="3000">
+                                <TextBlock Text="Lot 11" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold"/>
+                            </Border>
+                            <Border x:Name="Lot6_Copy5" Tag="11" Canvas.Left="866" Canvas.Top="412" Width="63" Height="72" Background="#FDE68A" BorderBrush="#92400E" BorderThickness="2" CornerRadius="8"
+                                PreviewMouseLeftButtonDown="Lot_Click" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.ZIndex="3000">
+                                <TextBlock Text="Lot 12" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold"/>
+                            </Border>
+                            <Border x:Name="Lot6_Copy6" Tag="12" Canvas.Left="550" Canvas.Top="447" Width="64" Height="72" Background="#FDE68A" BorderBrush="#92400E" BorderThickness="2" CornerRadius="8"
+                                PreviewMouseLeftButtonDown="Lot_Click" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.ZIndex="3000">
+                                <TextBlock Text="Lot 13" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold"/>
+                            </Border>
+                        </Canvas>
+                    </Grid>
+                </Border>
+            </Grid>
+
+            <Border Grid.Row="2" Background="#DD0F172A" Padding="10">
+                <TextBlock x:Name="StatusText" Text="Alege o clădire și plasează pe lot." Foreground="#E2E8F0" FontSize="14"/>
             </Border>
-        </Grid>
 
-        <Border Grid.Row="2" Background="#DD0F172A" Padding="10">
-            <TextBlock x:Name="StatusText" Text="Alege o clădire și plasează pe lot." Foreground="#E2E8F0" FontSize="14"/>
-        </Border>
-
-        <!-- Event popup -->
-        <Border x:Name="EventPopup"
+            <!-- Event popup -->
+            <Border x:Name="EventPopup"
                 Grid.RowSpan="3"
                 Width="560"
                 MinHeight="96"
@@ -234,33 +281,33 @@
                 IsHitTestVisible="False"
                 Panel.ZIndex="2000"
                 RenderTransformOrigin="0.5,0.5">
-            <Border.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform x:Name="EventPopupScale" ScaleX="0.85" ScaleY="0.85"/>
-                    <TranslateTransform x:Name="EventPopupTranslate" Y="-220"/>
-                </TransformGroup>
-            </Border.RenderTransform>
-            <TextBlock x:Name="EventPopupText"
+                <Border.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform x:Name="EventPopupScale" ScaleX="0.85" ScaleY="0.85"/>
+                        <TranslateTransform x:Name="EventPopupTranslate" Y="-220"/>
+                    </TransformGroup>
+                </Border.RenderTransform>
+                <TextBlock x:Name="EventPopupText"
                        Text="Event!"
                        FontSize="22"
                        FontWeight="ExtraBold"
                        Foreground="#7F1D1D"
                        TextAlignment="Center"
                        TextWrapping="Wrap"/>
-        </Border>
-        <!-- Drag ghost overlay -->
-        <Canvas Grid.RowSpan="3" IsHitTestVisible="False" Panel.ZIndex="999">
-            <Image x:Name="DragGhost"
+            </Border>
+            <!-- Drag ghost overlay -->
+            <Canvas Grid.RowSpan="3" IsHitTestVisible="False" Panel.ZIndex="999">
+                <Image x:Name="DragGhost"
                    Width="78" Height="62"
                    Visibility="Collapsed"
                    Opacity="0.95"
                    RenderTransformOrigin="0.5,0.01">
-                <Image.RenderTransform>
-                    <RotateTransform x:Name="DragGhostRotate" Angle="0"/>
-                </Image.RenderTransform>
-            </Image>
-        </Canvas>
-    </Grid>
+                    <Image.RenderTransform>
+                        <RotateTransform x:Name="DragGhostRotate" Angle="0"/>
+                    </Image.RenderTransform>
+                </Image>
+            </Canvas>
+        </Grid>
     </Viewbox>
 </Page>
 

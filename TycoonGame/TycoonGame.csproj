@@ -43,12 +43,17 @@
     <None Remove="Assets\Cursors\pointer.cur" />
     <None Remove="Assets\Fonts\Daydream DEMO.otf" />
     <None Remove="Assets\MainMenuBackground.png" />
+    <None Remove="Assets\Map\Map.png" />
     <None Remove="Assets\SaveIcon.png" />
     <None Remove="Assets\Sounds\music.mp3" />
     <None Remove="Assets\Sounds\sfx.wav" />
-    <None Remove="Assets\Textures\Water.jpg" />
-    <None Remove="Assets\Textures\Water.png" />
     <None Remove="Assets\UI\WoodPanel.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Assets\Map\Map.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
@@ -140,9 +145,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\MainMenuBackground.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Textures\Water.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Textures\Water.png">

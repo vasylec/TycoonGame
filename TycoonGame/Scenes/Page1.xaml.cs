@@ -74,7 +74,12 @@ namespace TycoonGame.Scenes
 
             SaveNameText.Text = $"Save: {(string.IsNullOrWhiteSpace(App.saveName) ? "NoName" : App.saveName)}";
 
-            _lotControls.AddRange(new[] { Lot1, Lot2, Lot3, Lot4, Lot5, Lot6 });
+            // Lots on the island (must match XAML names + Tag indexes)
+            _lotControls.AddRange(new[]
+            {
+                Lot1, Lot2, Lot3, Lot4, Lot5, Lot6,
+                Lot6_Copy, Lot6_Copy1, Lot6_Copy2, Lot6_Copy3, Lot6_Copy4, Lot6_Copy5, Lot6_Copy6
+            });
             for (int i = 0; i < _lotControls.Count; i++)
                 _lots.Add(new LotState());
 
@@ -90,6 +95,18 @@ namespace TycoonGame.Scenes
 
             UIHelper.ApplyPixelFontAndSettings(this);
             RefreshHud();
+
+            // Force map from code (same loading logic as building sprites)
+            // IMPORTANT: map must be above water, so we set it on MapImage (not canvas background)
+            try
+            {
+                MapImage.Source = LoadSprite("/Assets/Map/Map.png");
+                MapImage.Stretch = Stretch.Fill;
+            }
+            catch
+            {
+                // ignore
+            }
 
             Loaded += Game_Loaded; // wait until window is shown
             WaterCanvas.Children.Clear(); // remove old stuff+
@@ -395,10 +412,12 @@ namespace TycoonGame.Scenes
         {
             if (lotIndex == _upgradeLotIndex)
                 return;
-            
-            
+
             var lot = _lots[lotIndex];
             _upgradeLotIndex = lotIndex;
+
+            // Ensure the popup is above lots/buildings
+            Panel.SetZIndex(UpgradePanel, 2000);
 
             Canvas.SetLeft(UpgradePanel, Canvas.GetLeft(lotControl) + lotControl.Width + 10);
             Canvas.SetTop(UpgradePanel, Canvas.GetTop(lotControl));
@@ -693,15 +712,34 @@ namespace TycoonGame.Scenes
                 return;
             }
 
-            var panel = new StackPanel { VerticalAlignment = VerticalAlignment.Center };
-            panel.Children.Add(new Image
+            var panel = new StackPanel
+            {
+                VerticalAlignment = VerticalAlignment.Center,
+                HorizontalAlignment = HorizontalAlignment.Center
+            };
+
+            // Fit sprite inside the lot (avoid cropping)
+            var slotW = (lotControl.ActualWidth > 0 ? lotControl.ActualWidth : lotControl.Width);
+            var slotH = (lotControl.ActualHeight > 0 ? lotControl.ActualHeight : lotControl.Height);
+
+            // Leave room for text below
+            var imgMaxW = Math.Max(10, slotW - 10);
+            var imgMaxH = Math.Max(10, slotH - 28);
+
+            var spriteImg = new Image
             {
                 Source = LoadSprite(lotState.Sprite),
-                Width = 132,
-                Height = 98,
                 Stretch = Stretch.Uniform,
-                HorizontalAlignment = HorizontalAlignment.Center
-            });
+                HorizontalAlignment = HorizontalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Center,
+                SnapsToDevicePixels = true
+            };
+            RenderOptions.SetBitmapScalingMode(spriteImg, BitmapScalingMode.NearestNeighbor);
+
+            spriteImg.Width = imgMaxW;
+            spriteImg.Height = imgMaxH;
+
+            panel.Children.Add(spriteImg);
             panel.Children.Add(new TextBlock
             {
                 Text = $"{lotState.BuildingName} LVL{lotState.Level}",
@@ -979,6 +1017,9 @@ namespace TycoonGame.Scenes
 
             using (DrawingContext dc = waterVisual.RenderOpen())
             {
+                // Water tiles are full-frame and opaque; make them translucent so the map stays visible.
+                dc.PushOpacity(0.35);
+
                 for (int x = 0; x < 16; x++)
                 {
                     for (int y = 0; y < 9; y++)
@@ -990,6 +1031,8 @@ namespace TycoonGame.Scenes
                             new Rect(x * tileSize, y * tileSize, tileSize, tileSize));
                     }
                 }
+
+                dc.Pop();
             }
         }
     }
