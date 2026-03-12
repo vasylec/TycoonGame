@@ -4,6 +4,23 @@
              xmlns:local="clr-namespace:TycoonGame"
              StartupUri="Scenes/MainMenu.xaml">
     <Application.Resources>
-         
+        <Style TargetType="Button">
+            <Style.Triggers>
+                <EventTrigger RoutedEvent="PreviewMouseDown">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Tag">
+                                <DiscreteObjectKeyFrame>
+                                    <DiscreteObjectKeyFrame.KeyTime>0:0:0</DiscreteObjectKeyFrame.KeyTime>
+                                    <DiscreteObjectKeyFrame.Value>
+                                        <MediaPlayer x:Name="ClickPlayer" />
+                                    </DiscreteObjectKeyFrame.Value>
+                                </DiscreteObjectKeyFrame>
+                            </ObjectAnimationUsingKeyFrames>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </Style.Triggers>
+        </Style>
     </Application.Resources>
 </Application>

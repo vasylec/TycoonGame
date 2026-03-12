@@ -9,11 +9,156 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Assets\Buildings\BuildingBeige.png" />
+    <None Remove="Assets\Buildings\BuildingBeige_LVL2.png" />
+    <None Remove="Assets\Buildings\BuildingBeige_LVL3.png" />
+    <None Remove="Assets\Buildings\BuildingBlue.png" />
+    <None Remove="Assets\Buildings\BuildingBlue_LVL2.png" />
+    <None Remove="Assets\Buildings\BuildingBlue_LVL3.png" />
+    <None Remove="Assets\Buildings\BuildingWhite.png" />
+    <None Remove="Assets\Buildings\BuildingWhite_LVL2.png" />
+    <None Remove="Assets\Buildings\BuildingWhite_LVL3.png" />
     <None Remove="Assets\ButtonLoad.png" />
+    <None Remove="Assets\Buttons\ButtonBackArrow.png" />
+    <None Remove="Assets\Buttons\ButtonBackArrow_Click.png" />
+    <None Remove="Assets\Buttons\ButtonDelete.png" />
+    <None Remove="Assets\Buttons\ButtonDelete_Click.png" />
+    <None Remove="Assets\Buttons\ButtonDelete_Hover.png" />
+    <None Remove="Assets\Buttons\ButtonExit.png" />
+    <None Remove="Assets\Buttons\ButtonExit_Click.png" />
+    <None Remove="Assets\Buttons\ButtonExit_Hover.png" />
+    <None Remove="Assets\Buttons\ButtonLoad_Click.png" />
+    <None Remove="Assets\Buttons\ButtonLoad_Hover.png" />
+    <None Remove="Assets\Buttons\ButtonNewGame.png" />
+    <None Remove="Assets\Buttons\ButtonNewGame_Hover.png" />
+    <None Remove="Assets\Buttons\ButtonSave.png" />
+    <None Remove="Assets\Buttons\ButtonSave_Click.png" />
+    <None Remove="Assets\Buttons\ButtonSave_Hover.png" />
+    <None Remove="Assets\Buttons\ButtonSettings.png" />
+    <None Remove="Assets\Buttons\ButtonSettings_Click.png" />
+    <None Remove="Assets\Buttons\ButtonSettings_Hover.png" />
+    <None Remove="Assets\Buttons\ButtonX.png" />
+    <None Remove="Assets\Buttons\ButtonX_Click.png" />
+    <None Remove="Assets\Cursors\hand.cur" />
+    <None Remove="Assets\Cursors\pointer.cur" />
     <None Remove="Assets\Fonts\Daydream DEMO.otf" />
+    <None Remove="Assets\MainMenuBackground.png" />
+    <None Remove="Assets\Map\Map.png" />
     <None Remove="Assets\SaveIcon.png" />
-    <None Remove="Sounds\music.mp3" />
-    <None Remove="Sounds\sfx.wav" />
+    <None Remove="Assets\Sounds\music.mp3" />
+    <None Remove="Assets\Sounds\sfx.wav" />
+    <None Remove="Assets\UI\WoodPanel.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Assets\Map\Map.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Assets\Buildings\BuildingBeige.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Buildings\BuildingBeige_LVL2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Buildings\BuildingBeige_LVL3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Buildings\BuildingBlue.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Buildings\BuildingBlue_LVL2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Buildings\BuildingBlue_LVL3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Buildings\BuildingWhite.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Buildings\BuildingWhite_LVL2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Buildings\BuildingWhite_LVL3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Buttons\ButtonBackArrow.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Buttons\ButtonBackArrow_Click.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Buttons\ButtonDelete.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Buttons\ButtonDelete_Click.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Buttons\ButtonDelete_Hover.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Buttons\ButtonExit.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Buttons\ButtonExit_Click.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Buttons\ButtonExit_Hover.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Buttons\ButtonLoad_Click.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Buttons\ButtonLoad_Hover.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Buttons\ButtonNewGame.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Buttons\ButtonNewGame_Click.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Buttons\ButtonNewGame_Hover.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Buttons\ButtonSave_Click.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Buttons\ButtonSave_Hover.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Buttons\ButtonSettings.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Buttons\ButtonSettings_Click.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Buttons\ButtonSettings_Hover.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Buttons\ButtonX.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Buttons\ButtonX_Click.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\MainMenuBackground.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Textures\Water.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\UI\WoodPanel.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\Cursors\hand.cur">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
   <ItemGroup>
@@ -24,16 +169,25 @@
     <Resource Include="Assets\Fonts\Daydream DEMO.otf">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
-    <Content Include="Assets\ButtonLoad.png">
+    <Content Include="Assets\Buttons\ButtonLoad.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Assets\Buttons\ButtonSave.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Resource Include="Assets\Cursors\pointer.cur">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
     <Content Include="Assets\SaveIcon.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Sounds\music.mp3">
+    <Content Include="Assets\Sounds\music.mp3">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Sounds\sfx.wav">
+    <Content Include="Assets\Sounds\sfx.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Sounds\select_005.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
