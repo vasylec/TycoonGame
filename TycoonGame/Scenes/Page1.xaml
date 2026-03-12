@@ -212,7 +212,7 @@
 
                             <Border x:Name="UpgradePanel" Visibility="Collapsed" Canvas.Left="30" Canvas.Top="30"
                                 Width="250" Height="290" Background="#EE111827" BorderBrush="#64748B" BorderThickness="2" CornerRadius="10"
-                                Opacity="0" RenderTransformOrigin="0.5,0.5" Canvas.ZIndex="2000">
+                                Opacity="0" RenderTransformOrigin="0.5,0.5" Canvas.ZIndex="100000">
                                 <Border.RenderTransform>
                                     <ScaleTransform x:Name="UpgradePanelScale" ScaleX="0.82" ScaleY="0.82"/>
                                 </Border.RenderTransform>

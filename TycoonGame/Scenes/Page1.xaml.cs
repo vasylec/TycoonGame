@@ -417,7 +417,7 @@ namespace TycoonGame.Scenes
             _upgradeLotIndex = lotIndex;
 
             // Ensure the popup is above lots/buildings
-            Panel.SetZIndex(UpgradePanel, 2000);
+            Panel.SetZIndex(UpgradePanel, 10000);
 
             Canvas.SetLeft(UpgradePanel, Canvas.GetLeft(lotControl) + lotControl.Width + 10);
             Canvas.SetTop(UpgradePanel, Canvas.GetTop(lotControl));
